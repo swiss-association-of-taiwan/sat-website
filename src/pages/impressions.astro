@@ -1,0 +1,21 @@
+---
+import { getEntry } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import PhotoMosaic from "../components/PhotoMosaic.astro";
+import Lightbox from "../components/Lightbox.astro";
+
+const page = await getEntry("pages", "impressions");
+if (!page) throw new Error("Missing content/pages/impressions.md");
+const { title, subtitle } = page.data;
+---
+
+<Layout title={title} current="impressions">
+  <PageHeader title={title} subtitle={subtitle} />
+
+  <div class="max-w-content mx-auto px-5 lg:px-16 pb-16 md:pb-section">
+    <PhotoMosaic />
+  </div>
+
+  <Lightbox groupId="impressions" />
+</Layout>

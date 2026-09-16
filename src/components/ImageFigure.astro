@@ -6,22 +6,42 @@ interface Props {
   ratio?: "21:9" | "3:2" | "1:1";
   grayscale?: boolean;
   class?: string;
+  lightboxGroup?: string;
+  lightboxIndex?: number;
+  enlargeLabel?: string;
 }
 
-const { src, alt, caption, ratio = "3:2", grayscale = false, class: className } = Astro.props;
+const {
+  src,
+  alt,
+  caption,
+  ratio = "3:2",
+  grayscale = false,
+  class: className,
+  lightboxGroup,
+  lightboxIndex,
+  enlargeLabel,
+} = Astro.props;
 
 const ratioClass = { "21:9": "aspect-[21/9]", "3:2": "aspect-[3/2]", "1:1": "aspect-square" }[ratio];
+const imgClass = ["w-full h-full object-cover", ratioClass, grayscale && "grayscale"];
 ---
 
 <figure class:list={["m-0", className]}>
-  <img
-    src={src}
-    alt={alt}
-    class:list={["w-full h-full object-cover", ratioClass, grayscale && "grayscale"]}
-  />
   {
-    caption && (
-      <figcaption class="text-caption text-body border-t border-rule mt-sm pt-sm">{caption}</figcaption>
+    lightboxGroup ? (
+      <button
+        type="button"
+        class="block w-full p-0 border border-ink bg-canvas-soft cursor-zoom-in"
+        aria-label={enlargeLabel ?? `Enlarge: ${alt}`}
+        data-lightbox-trigger={lightboxGroup}
+        data-lightbox-index={lightboxIndex}
+      >
+        <img src={src} alt={alt} class:list={imgClass} />
+      </button>
+    ) : (
+      <img src={src} alt={alt} class:list={imgClass} />
     )
   }
+  {caption && <figcaption class="text-caption text-body border-t border-rule mt-sm pt-sm">{caption}</figcaption>}
 </figure>

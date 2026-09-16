@@ -12,7 +12,14 @@ import { renderMarkdown } from "./markdown";
 //   {{document:some-key}}          frontmatter array by `key`
 //   {{definitionRows}}             self-closing, renders the whole
 //                                  frontmatter.definitionRows block
+//   {{luma}}                       self-closing, renders the Luma calendar
+//                                  embed from frontmatter.lumaSrc
 //   {{emphasis}} ... {{/emphasis}} wraps a short display-quiet aside
+//   {{lead}} ... {{/lead}}         wraps a paragraph that should read at
+//                                  body-lead (21px) size — used exactly
+//                                  where a mockup shows it, not inferred
+//                                  from position (first/last paragraphs are
+//                                  body-md by default)
 //
 // Consecutive markers of the same kind (figure/document) are grouped so the
 // template can lay them out as a side-by-side pair, matching the mockup.
@@ -21,12 +28,17 @@ export type ArticleBlock =
   | { kind: "figureGroup"; keys: string[] }
   | { kind: "documentGroup"; keys: string[] }
   | { kind: "definitionRows" }
-  | { kind: "emphasis"; text: string };
+  | { kind: "luma" }
+  | { kind: "emphasis"; text: string }
+  | { kind: "lead"; text: string };
 
 const SELF_CLOSING = /^\{\{(figure|document):([\w-]+)\}\}$/;
 const DEFINITION_ROWS = /^\{\{definitionRows\}\}$/;
+const LUMA = /^\{\{luma\}\}$/;
 const EMPHASIS_OPEN = /^\{\{emphasis\}\}$/;
 const EMPHASIS_CLOSE = /^\{\{\/emphasis\}\}$/;
+const LEAD_OPEN = /^\{\{lead\}\}$/;
+const LEAD_CLOSE = /^\{\{\/lead\}\}$/;
 
 export function parseArticleBody(source: string): ArticleBlock[] {
   const lines = source.split("\n");
@@ -66,6 +78,13 @@ export function parseArticleBody(source: string): ArticleBlock[] {
       continue;
     }
 
+    if (LUMA.test(line)) {
+      flushHtml();
+      blocks.push({ kind: "luma" });
+      i++;
+      continue;
+    }
+
     if (EMPHASIS_OPEN.test(line)) {
       flushHtml();
       i++;
@@ -75,6 +94,19 @@ export function parseArticleBody(source: string): ArticleBlock[] {
         i++;
       }
       blocks.push({ kind: "emphasis", text: inner.join(" ").trim() });
+      i++; // skip the closing marker
+      continue;
+    }
+
+    if (LEAD_OPEN.test(line)) {
+      flushHtml();
+      i++;
+      const inner: string[] = [];
+      while (i < lines.length && !LEAD_CLOSE.test(lines[i].trim())) {
+        inner.push(lines[i]);
+        i++;
+      }
+      blocks.push({ kind: "lead", text: inner.join(" ").trim() });
       i++; // skip the closing marker
       continue;
     }

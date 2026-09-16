@@ -1,0 +1,72 @@
+---
+import { getEntry } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Section from "../components/Section.astro";
+import ArticleBlocks from "../components/ArticleBlocks.astro";
+import { parseArticleBody } from "../lib/articleBody";
+
+const page = await getEntry("pages", "membership");
+if (!page) throw new Error("Missing content/pages/membership.md");
+const { title, subtitle, figures, fees, formalooSlug } = page.data;
+
+const blocks = parseArticleBody(page.body ?? "");
+---
+
+<Layout title={title} current="membership">
+  <PageHeader title={title} subtitle={subtitle} />
+
+  <div class="max-w-content mx-auto px-5 lg:px-16 pb-12 md:pb-22">
+    <ArticleBlocks blocks={blocks} figures={figures} />
+  </div>
+
+  {
+    fees && fees.length > 0 && (
+      <Section background="canvas-soft" borderTop>
+        <h2 class="text-heading-lg text-ink max-w-[26ch]">Annual membership</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-xl mt-10 max-w-[720px]">
+          {fees.map((fee) => (
+            <div class="border-t-2 border-ink pt-lg">
+              <div class="text-label text-red-ink">{fee.category}</div>
+              <div class="text-display-quiet text-ink mt-sm">{fee.amount}</div>
+              <div class="text-body-sm text-body mt-xxs">per year</div>
+            </div>
+          ))}
+        </div>
+      </Section>
+    )
+  }
+
+  <Section borderTop>
+    <h2 class="text-heading-lg text-ink max-w-[26ch]">Join SAT</h2>
+    <p class="text-body-md text-body mt-lg max-w-[68ch]">Fill out the form below to join SAT and be part of the community.</p>
+    {
+      formalooSlug && (
+        <Fragment>
+          <div
+            class="formaloo--root-container mt-xl"
+            data-form-slug={formalooSlug}
+            data-transparent-background="false"
+            data-hide-title="false"
+            data-hide-cover-and-logo="false"
+            data-fill-container-width="true"
+            data-auto-height="false"
+            style="width:100%;height:715px"
+          />
+          <script src="https://embed.formaloo.me/v1/main.js" defer></script>
+        </Fragment>
+      )
+    }
+  </Section>
+
+  <Section background="canvas-soft" borderTop>
+    <div class="flex flex-wrap gap-md">
+      <a href="/events/" class="inline-flex items-center bg-red text-on-red text-label px-lg py-md min-h-11 hover:bg-red-ink">
+        See all events
+      </a>
+      <a href="/about/" class="inline-flex items-center bg-canvas-soft text-ink border border-ink text-label px-lg py-md min-h-11 hover:bg-ink hover:text-on-dark">
+        More about SAT
+      </a>
+    </div>
+  </Section>
+</Layout>

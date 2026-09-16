@@ -1,0 +1,92 @@
+---
+import { getEntry } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import Section from "../components/Section.astro";
+import ClosingCta from "../components/ClosingCta.astro";
+
+const page = await getEntry("pages", "contact");
+if (!page) throw new Error("Missing content/pages/contact.md");
+const { title, subtitle, formalooSlug, directContacts, locationLabel, phone, note, closing } = page.data;
+---
+
+<Layout title={title} current="contact">
+  <PageHeader title={title} subtitle={subtitle} />
+
+  <Section borderTop>
+    <div class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-8 md:gap-16 items-start">
+      <div>
+        <div class="text-label text-ink pb-md border-b border-ink">Send a message</div>
+        {
+          formalooSlug ? (
+            <Fragment>
+              <div
+                class="formaloo--root-container mt-lg"
+                data-form-slug={formalooSlug}
+                data-transparent-background="false"
+                data-hide-title="false"
+                data-hide-cover-and-logo="false"
+                data-fill-container-width="true"
+                data-auto-height="false"
+                style="width:100%;height:715px"
+              />
+              <script src="https://embed.formaloo.me/v1/main.js" defer></script>
+            </Fragment>
+          ) : (
+            <div class="mt-lg border border-dashed border-mute bg-canvas-soft min-h-[400px] flex items-center justify-center p-xl">
+              <div class="max-w-[40ch]">
+                <div class="text-label text-body">Form pending</div>
+                <p class="text-body-md text-body mt-sm">
+                  The contact form will appear here once SAT supplies a Formaloo slug.
+                </p>
+              </div>
+            </div>
+          )
+        }
+      </div>
+
+      <div>
+        <div class="text-label text-ink pb-md border-b border-ink">Or write to us directly</div>
+        <div class="mt-lg flex flex-col gap-lg">
+          {
+            (directContacts ?? []).map((contact) => (
+              <div>
+                <div class="text-label text-red-ink">{contact.label}</div>
+                <a href={`mailto:${contact.email}`} class="inline-block mt-xs text-body-md text-red-ink break-words hover:text-ink">
+                  {contact.email}
+                </a>
+              </div>
+            ))
+          }
+          {
+            (locationLabel || phone) && (
+              <div class="border-t border-rule pt-lg">
+                {locationLabel && <div class="text-label text-ink">{locationLabel}</div>}
+                {phone && <div class="text-body-md text-body mt-xs">{phone}</div>}
+              </div>
+            )
+          }
+          {
+            note && (
+              <div class="border-t border-rule pt-lg">
+                <p class="text-body-sm text-body">
+                  {note.bodyBefore}
+                  {note.linkHref ? (
+                    <a href={note.linkHref} target="_blank" rel="noopener" class="link-inline">
+                      {note.linkText}
+                    </a>
+                  ) : (
+                    note.linkText
+                  )}
+                  {note.bodyAfter}
+                </p>
+              </div>
+            )
+          }
+        </div>
+      </div>
+    </div>
+  </Section>
+
+  {closing && <ClosingCta {...closing} />}
+</Layout>
