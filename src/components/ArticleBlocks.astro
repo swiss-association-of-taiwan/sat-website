@@ -1,0 +1,119 @@
+---
+import type { ArticleBlock } from "../lib/articleBody";
+import ImageFigure from "./ImageFigure.astro";
+import DocumentCard from "./DocumentCard.astro";
+
+interface Figure {
+  key: string;
+  src: string;
+  alt: string;
+  caption: string;
+  ratio: "21:9" | "3:2" | "1:1";
+  grayscale: boolean;
+}
+interface Doc {
+  key: string;
+  href?: string;
+  label: string;
+  title: string;
+  description: string;
+}
+interface DefinitionRow {
+  label: string;
+  value: string;
+}
+
+interface Props {
+  blocks: ArticleBlock[];
+  figures?: Figure[];
+  documents?: Doc[];
+  definitionRows?: DefinitionRow[];
+  lumaSrc?: string;
+  /** When set, every figure here becomes a lightbox trigger in this group —
+      pair with a sibling <Lightbox groupId={...}> and register the group's
+      image list (see about.astro for the pattern). */
+  lightboxGroup?: string;
+}
+
+const { blocks, figures = [], documents = [], definitionRows = [], lumaSrc, lightboxGroup } = Astro.props;
+const figureByKey = new Map(figures.map((f) => [f.key, f]));
+const documentByKey = new Map(documents.map((d) => [d.key, d]));
+
+let lightboxCursor = 0;
+---
+
+<div class="article-body">
+  {
+    blocks.map((block) => {
+      if (block.kind === "html") return <Fragment set:html={block.html} />;
+
+      if (block.kind === "figureGroup") {
+        const items = block.keys.map((k) => figureByKey.get(k)).filter((f) => f !== undefined);
+        const wide = items.length === 1;
+        return (
+          <div class:list={["grid gap-xl !mt-12", wide ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2"]}>
+            {items.map((fig) => (
+              <ImageFigure
+                src={fig.src}
+                alt={fig.alt}
+                caption={fig.caption}
+                ratio={fig.ratio}
+                grayscale={fig.grayscale}
+                lightboxGroup={lightboxGroup}
+                lightboxIndex={lightboxGroup ? lightboxCursor++ : undefined}
+              />
+            ))}
+          </div>
+        );
+      }
+
+      if (block.kind === "documentGroup") {
+        const items = block.keys.map((k) => documentByKey.get(k)).filter((d) => d !== undefined);
+        return (
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-lg !mt-10">
+            {items.map((doc) => (
+              <DocumentCard href={doc.href} label={doc.label} title={doc.title} description={doc.description} />
+            ))}
+          </div>
+        );
+      }
+
+      if (block.kind === "definitionRows") {
+        return (
+          <div class="!mt-12 border-t border-ink">
+            {definitionRows.map((row) => (
+              <div class="flex flex-wrap gap-x-lg gap-y-xs py-lg border-b border-rule">
+                <div class="basis-[132px] shrink-0 text-label text-ink pt-1">{row.label}</div>
+                <div class="flex-1 min-w-[200px] text-body-md text-body max-w-[68ch]">{row.value}</div>
+              </div>
+            ))}
+          </div>
+        );
+      }
+
+      if (block.kind === "luma" && lumaSrc) {
+        return (
+          <div class="!mt-10 border border-ink">
+            <iframe
+              src={lumaSrc}
+              title="SAT events calendar"
+              class="block w-full h-[720px] border-0"
+              loading="lazy"
+              allowfullscreen
+            />
+          </div>
+        );
+      }
+
+      if (block.kind === "emphasis") {
+        return <p class="text-display-quiet text-ink !mt-10 max-w-[26ch]">{block.text}</p>;
+      }
+
+      if (block.kind === "lead") {
+        return <p class="lead-paragraph">{block.text}</p>;
+      }
+
+      return null;
+    })
+  }
+</div>

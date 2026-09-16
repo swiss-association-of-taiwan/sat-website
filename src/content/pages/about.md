@@ -24,15 +24,19 @@ toc:
   - href: "#committee"
     label: "Our committee"
 
-archiveFigures:
+figures:
   - key: "tages-anzeiger"
     src: "/images/archive-tages-anzeiger.jpg"
     alt: "Tages-Anzeiger article on the founding of the Swiss Association of Taiwan, December 1990"
     caption: "Tages-Anzeiger, 11 December 1990. Report from Taipei on the founding of the association. Click to enlarge."
+    ratio: "3:2"
+    grayscale: true
   - key: "president-message"
     src: "/images/archive-president-message.jpg"
     alt: "Typed message from founding President Hans-Ruedi Burkhalter"
     caption: "Message from founding President Hans-Ruedi Burkhalter, printed in Bulletin 00."
+    ratio: "3:2"
+    grayscale: true
 
 documents:
   - key: "bulletin-00"
@@ -65,7 +69,9 @@ closing:
   secondaryHref: "/membership/"
 ---
 
+{{lead}}
 And there was a special reason why the timing felt right.
+{{/lead}}
 
 Switzerland was about to celebrate the 700th anniversary of the Confederation in 1991. In the first message to the new association, founding President Hans-Ruedi Burkhalter wrote:
 

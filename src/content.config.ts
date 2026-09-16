@@ -1,6 +1,16 @@
 import { defineCollection, z } from "astro:content";
 import { glob } from "astro/loaders";
 
+// A sentence with one inline link in the middle, e.g. "...contact the
+// {linkText}." — linkHref empty renders linkText as plain text instead of a
+// dead link. Never hardcode the URL in a component; it lives here.
+const linkableText = z.object({
+  bodyBefore: z.string(),
+  linkText: z.string(),
+  linkHref: z.string().optional(),
+  bodyAfter: z.string(),
+});
+
 // Prose pages: about, events, membership, impressions, get-involved, contact.
 // Frontmatter is structural (title, images, links, card lists) and is not
 // meant to be edited by the committee — see handoff/EDITING.md. The markdown
@@ -72,17 +82,7 @@ const pages = defineCollection({
         secondaryHref: z.string(),
       })
       .optional(),
-    contactCards: z
-      .array(
-        z.object({
-          title: z.string(),
-          bodyBefore: z.string(),
-          linkText: z.string(),
-          linkHref: z.string().optional(),
-          bodyAfter: z.string(),
-        }),
-      )
-      .optional(),
+    contactCards: z.array(z.object({ title: z.string() }).merge(linkableText)).optional(),
 
     // About only
     heroImage: z
@@ -94,9 +94,20 @@ const pages = defineCollection({
       .optional(),
     toc: z.array(z.object({ href: z.string(), label: z.string() })).optional(),
     // Keyed by the {{figure:key}} / {{document:key}} markers in the markdown
-    // body below — see src/lib/articleBody.ts.
-    archiveFigures: z
-      .array(z.object({ key: z.string(), src: z.string(), alt: z.string(), caption: z.string() }))
+    // body below — see src/lib/articleBody.ts. ratio/grayscale are explicit
+    // per SAT-DESIGN-ADDENDUM.md #5: archive scans run grayscale, event
+    // photography never does.
+    figures: z
+      .array(
+        z.object({
+          key: z.string(),
+          src: z.string(),
+          alt: z.string(),
+          caption: z.string(),
+          ratio: z.enum(["21:9", "3:2", "1:1"]).default("3:2"),
+          grayscale: z.boolean().default(false),
+        }),
+      )
       .optional(),
     documents: z
       .array(
@@ -109,18 +120,34 @@ const pages = defineCollection({
         }),
       )
       .optional(),
+    // Shared by About, Events (Before you register), reached via
+    // {{definitionRows}} in the body.
     definitionRows: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
     articlesLink: z.string().optional(),
+    // Shared closing CTA band — About, Events, Get Involved, Contact.
     closing: z
       .object({
         title: z.string(),
         body: z.string(),
         primaryLabel: z.string(),
         primaryHref: z.string(),
-        secondaryLabel: z.string(),
-        secondaryHref: z.string(),
+        secondaryLabel: z.string().optional(),
+        secondaryHref: z.string().optional(),
       })
       .optional(),
+
+    // Events only
+    lumaSrc: z.string().optional(),
+
+    // Membership only
+    fees: z.array(z.object({ category: z.string(), amount: z.string() })).optional(),
+    formalooSlug: z.string().optional(),
+
+    // Contact only
+    directContacts: z.array(z.object({ label: z.string(), email: z.string() })).optional(),
+    locationLabel: z.string().optional(),
+    phone: z.string().optional(),
+    note: linkableText.optional(),
   }),
 });
 

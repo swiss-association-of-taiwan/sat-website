@@ -202,9 +202,11 @@
   }
 
   /* Rendered markdown body — components/article-body in SAT-DESIGN.md.
-     Heading in ink, paragraphs in body grey, measure capped at 68ch.
-     The opening paragraph reads as the page's lead line at body-lead size;
-     every paragraph after it is body-md. */
+     Heading in ink, paragraphs in body grey, measure capped at 68ch. A
+     paragraph only gets the 21px lead or 300-weight emphasis treatment when
+     the body explicitly marks it with {{lead}}/{{emphasis}} — position in
+     the flow (first, last, mid-section) varies per page in the mockups, so
+     there is no reliable automatic rule. */
   .article-body {
     color: var(--color-body);
     max-width: var(--container-prose, 68ch);
@@ -236,7 +238,7 @@
     font-size: 17px;
     line-height: 28px;
   }
-  .article-body > p:first-of-type {
+  .article-body .lead-paragraph {
     font-size: 21px;
     line-height: 32px;
     color: var(--color-ink);

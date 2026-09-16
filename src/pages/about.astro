@@ -2,21 +2,19 @@
 import { getEntry, getCollection } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import PageHeader from "../components/PageHeader.astro";
-import Section from "../components/Section.astro";
 import ImageFigure from "../components/ImageFigure.astro";
-import DocumentCard from "../components/DocumentCard.astro";
 import TocNav from "../components/TocNav.astro";
+import ArticleBlocks from "../components/ArticleBlocks.astro";
+import ClosingCta from "../components/ClosingCta.astro";
+import Lightbox from "../components/Lightbox.astro";
 import { parseArticleBody } from "../lib/articleBody";
 
 const page = await getEntry("pages", "about");
 if (!page) throw new Error("Missing content/pages/about.md");
-const { title, subtitle, intro, heroImage, toc, archiveFigures, documents, definitionRows, articlesLink, closing } =
+const { title, subtitle, intro, heroImage, toc, figures, documents, definitionRows, articlesLink, closing } =
   page.data;
 
 const blocks = parseArticleBody(page.body ?? "");
-const figureByKey = new Map((archiveFigures ?? []).map((f) => [f.key, f]));
-const documentByKey = new Map((documents ?? []).map((d) => [d.key, d]));
-
 const committee = (await getCollection("committee")).sort((a, b) => a.data.order - b.data.order);
 ---
 
@@ -37,53 +35,14 @@ const committee = (await getCollection("committee")).sort((a, b) => a.data.order
         <TocNav items={toc ?? []} />
 
         <div>
-          <div id="how-it-started" class="article-body">
-            {
-              blocks.map((block) => {
-                if (block.kind === "html") return <Fragment set:html={block.html} />;
-
-                if (block.kind === "figureGroup") {
-                  const figures = block.keys.map((k) => figureByKey.get(k)).filter((f) => f !== undefined);
-                  return (
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-xl !mt-12">
-                      {figures.map((fig) => (
-                        <ImageFigure src={fig.src} alt={fig.alt} caption={fig.caption} ratio="3:2" grayscale />
-                      ))}
-                    </div>
-                  );
-                }
-
-                if (block.kind === "documentGroup") {
-                  const docs = block.keys.map((k) => documentByKey.get(k)).filter((d) => d !== undefined);
-                  return (
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-lg !mt-10">
-                      {docs.map((doc) => (
-                        <DocumentCard href={doc.href} label={doc.label} title={doc.title} description={doc.description} />
-                      ))}
-                    </div>
-                  );
-                }
-
-                if (block.kind === "definitionRows") {
-                  return (
-                    <div class="!mt-12 border-t border-ink">
-                      {(definitionRows ?? []).map((row) => (
-                        <div class="flex flex-wrap gap-x-lg gap-y-xs py-lg border-b border-rule">
-                          <div class="basis-[132px] shrink-0 text-label text-ink pt-1">{row.label}</div>
-                          <div class="flex-1 min-w-[200px] text-body-md text-body max-w-[68ch]">{row.value}</div>
-                        </div>
-                      ))}
-                    </div>
-                  );
-                }
-
-                if (block.kind === "emphasis") {
-                  return <p class="text-display-quiet text-ink !mt-10 max-w-[26ch]">{block.text}</p>;
-                }
-
-                return null;
-              })
-            }
+          <div id="how-it-started">
+            <ArticleBlocks
+              blocks={blocks}
+              figures={figures}
+              documents={documents}
+              definitionRows={definitionRows}
+              lightboxGroup="about-archive"
+            />
           </div>
 
           <section id="committee" class="mt-12 md:mt-16 border-t border-ink pt-10 md:pt-14">
@@ -135,20 +94,11 @@ const committee = (await getCollection("committee")).sort((a, b) => a.data.order
     </div>
   </div>
 
-  {
-    closing && (
-      <Section background="canvas-soft" borderTop>
-        <h2 class="text-heading-lg text-ink max-w-[24ch]">{closing.title}</h2>
-        <p class="text-body-lead text-body mt-lg max-w-[68ch]">{closing.body}</p>
-        <div class="flex flex-wrap gap-md mt-10">
-          <a href={closing.primaryHref} class="inline-flex items-center bg-red text-on-red text-label px-lg py-md min-h-11 hover:bg-red-ink">
-            {closing.primaryLabel}
-          </a>
-          <a href={closing.secondaryHref} class="inline-flex items-center bg-canvas-soft text-ink border border-ink text-label px-lg py-md min-h-11 hover:bg-ink hover:text-on-dark">
-            {closing.secondaryLabel}
-          </a>
-        </div>
-      </Section>
-    )
-  }
+  {closing && <ClosingCta {...closing} />}
+
+  <script define:vars={{ images: (figures ?? []).map((f) => ({ src: f.src, alt: f.alt })) }}>
+    window.__lightboxGroups = window.__lightboxGroups || {};
+    window.__lightboxGroups["about-archive"] = images;
+  </script>
+  <Lightbox groupId="about-archive" />
 </Layout>

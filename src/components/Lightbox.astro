@@ -1,0 +1,102 @@
+---
+// Shared by Impressions and About's two archive scans — see
+// handoff/SAT-DESIGN-ADDENDUM.md "Lightbox". Pair with trigger elements
+// carrying data-lightbox-trigger={groupId} and data-lightbox-index={n}; the
+// trigger's own component registers window.__lightboxGroups[groupId].
+interface Props {
+  groupId: string;
+}
+
+const { groupId } = Astro.props;
+---
+
+<div
+  id={`lightbox-${groupId}`}
+  class="lightbox hidden fixed inset-0 z-[100] items-center justify-center p-3 md:p-8"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Photo viewer"
+>
+  <div class="absolute inset-0 bg-ink/95"></div>
+  <div class="relative bg-canvas border border-ink p-3 max-w-[92vw] max-h-[92vh] flex flex-col">
+    <div class="flex items-center justify-between gap-md pb-3">
+      <span class="lightbox-counter text-body-sm text-ink"></span>
+      <div class="flex gap-2">
+        <button type="button" class="lightbox-prev inline-flex items-center justify-center min-w-11 min-h-11 px-md border border-ink text-label text-ink hover:bg-canvas-soft" aria-label="Previous image">Prev</button>
+        <button type="button" class="lightbox-next inline-flex items-center justify-center min-w-11 min-h-11 px-md border border-ink text-label text-ink hover:bg-canvas-soft" aria-label="Next image">Next</button>
+        <button type="button" class="lightbox-close inline-flex items-center justify-center min-w-11 min-h-11 px-md border border-ink text-label text-ink hover:bg-canvas-soft" aria-label="Close">Close</button>
+      </div>
+    </div>
+    <img class="lightbox-img block max-w-[88vw] max-h-[78vh] w-auto h-auto object-contain" src="" alt="" />
+  </div>
+</div>
+
+<script define:vars={{ groupId }}>
+  document.addEventListener("DOMContentLoaded", () => {
+    const root = document.getElementById(`lightbox-${groupId}`);
+    if (!root) return;
+
+    const img = root.querySelector(".lightbox-img");
+    const counter = root.querySelector(".lightbox-counter");
+    const prevBtn = root.querySelector(".lightbox-prev");
+    const nextBtn = root.querySelector(".lightbox-next");
+    const closeBtn = root.querySelector(".lightbox-close");
+
+    let currentIndex = 0;
+    let lastFocused = null;
+
+    const images = () => (window.__lightboxGroups && window.__lightboxGroups[groupId]) || [];
+
+    const render = () => {
+      const list = images();
+      const item = list[currentIndex];
+      if (!item) return;
+      img.src = item.src;
+      img.alt = item.alt;
+      counter.textContent = `${currentIndex + 1} / ${list.length}`;
+    };
+
+    const open = (index) => {
+      lastFocused = document.activeElement;
+      currentIndex = index;
+      render();
+      root.classList.remove("hidden");
+      root.classList.add("flex");
+      document.body.style.overflow = "hidden";
+      closeBtn.focus();
+    };
+
+    const close = () => {
+      root.classList.add("hidden");
+      root.classList.remove("flex");
+      document.body.style.overflow = "";
+      if (lastFocused) lastFocused.focus();
+    };
+
+    const step = (delta) => {
+      const list = images();
+      currentIndex = (currentIndex + delta + list.length) % list.length;
+      render();
+    };
+
+    document.querySelectorAll(`[data-lightbox-trigger="${groupId}"]`).forEach((trigger) => {
+      trigger.addEventListener("click", () => {
+        open(Number(trigger.dataset.lightboxIndex));
+      });
+    });
+
+    prevBtn.addEventListener("click", () => step(-1));
+    nextBtn.addEventListener("click", () => step(1));
+    closeBtn.addEventListener("click", close);
+    root.addEventListener("click", (event) => {
+      if (event.target === root || event.target.classList.contains("absolute")) close();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (root.classList.contains("hidden")) return;
+      if (event.key === "Escape") close();
+      if (event.key === "ArrowLeft") step(-1);
+      if (event.key === "ArrowRight") step(1);
+    });
+  });
+</script>

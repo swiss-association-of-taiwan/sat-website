@@ -1,0 +1,24 @@
+---
+import { getEntry } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import PageHeader from "../components/PageHeader.astro";
+import ArticleBlocks from "../components/ArticleBlocks.astro";
+import ClosingCta from "../components/ClosingCta.astro";
+import { parseArticleBody } from "../lib/articleBody";
+
+const page = await getEntry("pages", "events");
+if (!page) throw new Error("Missing content/pages/events.md");
+const { title, subtitle, lumaSrc, definitionRows, closing } = page.data;
+
+const blocks = parseArticleBody(page.body ?? "");
+---
+
+<Layout title={title} current="events">
+  <PageHeader title={title} subtitle={subtitle} />
+
+  <div class="max-w-content mx-auto px-5 lg:px-16 pb-16 md:pb-section">
+    <ArticleBlocks blocks={blocks} lumaSrc={lumaSrc} definitionRows={definitionRows} />
+  </div>
+
+  {closing && <ClosingCta {...closing} />}
+</Layout>
