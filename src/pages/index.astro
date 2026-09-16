@@ -1,0 +1,137 @@
+---
+import { getEntry } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import Section from "../components/Section.astro";
+
+const page = await getEntry("pages", "home");
+if (!page) throw new Error("Missing content/pages/home.md");
+const { hero, nextEvent, audience, eventsTeaser, membershipCta, contactCards } = page.data;
+---
+
+<Layout title="Home" current="home">
+  {
+    hero && (
+      <section class="bg-canvas">
+        <img src={hero.image} alt={hero.imageAlt} class="w-full aspect-[16/9] sm:aspect-[21/9] object-cover" />
+        <div class="max-w-content mx-auto px-5 lg:px-16 pt-10 md:pt-16 pb-16 md:pb-section">
+          <h1 class="text-display-xl text-ink max-w-[16ch]">{hero.title}</h1>
+          <p class="text-display-quiet text-ink mt-xl max-w-[34ch]">{hero.subtitle}</p>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    nextEvent && (
+      <Section borderTop>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-start">
+          <div>
+            <h2 class="text-display-lg text-ink max-w-[16ch]">{nextEvent.title}</h2>
+            {nextEvent.paragraphs.map((p, i) => (
+              <p class:list={["text-body mt-lg max-w-[68ch]", i === 0 ? "text-body-lead" : "text-body-md"]}>{p}</p>
+            ))}
+            <div class="mt-10">
+              <a
+                href={nextEvent.ctaHref}
+                class="inline-flex items-center bg-red text-on-red text-label px-lg py-md min-h-11 hover:bg-red-ink"
+              >
+                {nextEvent.ctaLabel}
+              </a>
+            </div>
+          </div>
+          <div>
+            <img src={nextEvent.image} alt={nextEvent.imageAlt} class="w-full aspect-[3/2] object-cover" />
+            <div class="text-caption text-body border-t border-rule mt-sm pt-sm">{nextEvent.caption}</div>
+          </div>
+        </div>
+      </Section>
+    )
+  }
+
+  {
+    audience && (
+      <Section background="canvas-soft">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-start">
+          <h2 class="text-display-md text-ink max-w-[22ch]">{audience.title}</h2>
+          <p class="text-body-lead text-body max-w-[68ch]">{audience.lead}</p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-lg mt-16">
+          {audience.cards.map((card) => (
+            <div class="border-t border-ink pt-lg">
+              <h3 class="text-heading-sm text-ink">{card.title}</h3>
+              <p class="text-body-md text-body mt-xs">{card.body}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+    )
+  }
+
+  {
+    eventsTeaser && (
+      <Section>
+        <div class="flex flex-wrap items-end justify-between gap-md">
+          <h2 class="text-display-md text-ink max-w-[24ch]">{eventsTeaser.title}</h2>
+          <a href={eventsTeaser.linkHref} class="text-body-md link-inline hover:text-ink">
+            {eventsTeaser.linkLabel}
+          </a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-lg mt-10">
+          {eventsTeaser.cards.map((card) => (
+            <article class="border-t border-ink pt-md pb-lg">
+              <img src={card.image} alt={card.imageAlt} class="w-full aspect-[3/2] object-cover" />
+              <div class="inline-block bg-red text-on-red text-date-block px-sm py-xs mt-lg">{card.frequency}</div>
+              <h3 class="text-display-md text-ink mt-md">{card.title}</h3>
+              <p class="text-body-md text-body mt-sm max-w-[68ch]">{card.body}</p>
+            </article>
+          ))}
+        </div>
+      </Section>
+    )
+  }
+
+  {
+    membershipCta && (
+      <section class="bg-canvas-soft">
+        <div class="grid grid-cols-1 md:grid-cols-2 items-stretch">
+          <div class="min-h-[300px] md:min-h-[560px]">
+            <img src={membershipCta.image} alt={membershipCta.imageAlt} class="w-full h-full min-h-[300px] md:min-h-[560px] object-cover" />
+          </div>
+          <div class="flex flex-col justify-center px-5 lg:px-16 py-16 md:py-section">
+            <h2 class="text-display-lg text-ink max-w-[18ch]">{membershipCta.title}</h2>
+            <p class="text-body-lead text-body mt-xl max-w-[68ch]">{membershipCta.body}</p>
+            <div class="flex flex-wrap gap-md mt-10">
+              <a
+                href={membershipCta.primaryHref}
+                class="inline-flex items-center bg-red text-on-red text-label px-lg py-md min-h-11 hover:bg-red-ink"
+              >
+                {membershipCta.primaryLabel}
+              </a>
+              <a
+                href={membershipCta.secondaryHref}
+                class="inline-flex items-center bg-canvas-soft text-ink border border-ink text-label px-lg py-md min-h-11 hover:bg-ink hover:text-on-dark"
+              >
+                {membershipCta.secondaryLabel}
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {
+    contactCards && contactCards.length > 0 && (
+      <Section>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8 md:gap-16">
+          {contactCards.map((card) => (
+            <div class="border-t border-ink pt-lg">
+              <h3 class="text-heading-lg text-ink">{card.title}</h3>
+              <p class="text-body-md text-body mt-sm max-w-[68ch]">{card.body}</p>
+            </div>
+          ))}
+        </div>
+      </Section>
+    )
+  }
+</Layout>
