@@ -1,0 +1,27 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  caption?: string;
+  ratio?: "21:9" | "3:2" | "1:1";
+  grayscale?: boolean;
+  class?: string;
+}
+
+const { src, alt, caption, ratio = "3:2", grayscale = false, class: className } = Astro.props;
+
+const ratioClass = { "21:9": "aspect-[21/9]", "3:2": "aspect-[3/2]", "1:1": "aspect-square" }[ratio];
+---
+
+<figure class:list={["m-0", className]}>
+  <img
+    src={src}
+    alt={alt}
+    class:list={["w-full h-full object-cover", ratioClass, grayscale && "grayscale"]}
+  />
+  {
+    caption && (
+      <figcaption class="text-caption text-body border-t border-rule mt-sm pt-sm">{caption}</figcaption>
+    )
+  }
+</figure>

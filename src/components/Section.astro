@@ -1,0 +1,17 @@
+---
+interface Props {
+  background?: "canvas" | "canvas-soft";
+  borderTop?: boolean;
+  class?: string;
+}
+
+const { background = "canvas", borderTop = false, class: className } = Astro.props;
+
+const bgClass = background === "canvas-soft" ? "bg-canvas-soft" : "bg-canvas";
+---
+
+<section class:list={[bgClass, borderTop && "border-t border-rule", className]}>
+  <div class="max-w-content mx-auto px-5 lg:px-16 py-16 md:py-section">
+    <slot />
+  </div>
+</section>

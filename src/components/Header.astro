@@ -1,0 +1,133 @@
+---
+import { navLinks, type NavKey } from "../lib/nav";
+
+interface Props {
+  current: NavKey;
+}
+
+const { current } = Astro.props;
+---
+
+<header id="site-header" class="sticky top-0 z-50 bg-canvas border-b border-ink">
+  <div class="max-w-content mx-auto flex items-center justify-between gap-lg px-5 lg:px-16 py-md">
+    <a href="/" class="shrink-0">
+      <img
+        id="brand-logo"
+        src="/images/logo-v4.png"
+        alt="Swiss Association of Taiwan"
+        class="h-[150px] max-[700px]:h-[74px] w-auto transition-[height] duration-200 ease-out"
+      />
+    </a>
+
+    <nav aria-label="Primary" class="hidden min-[1120px]:flex items-center gap-[22px] ml-auto">
+      {
+        navLinks.map((link) => (
+          <a
+            href={link.href}
+            aria-current={link.key === current ? "page" : undefined}
+            class:list={[
+              "text-body-sm text-ink whitespace-nowrap pb-1 border-b-2 hover:text-red-ink",
+              link.key === current ? "border-red" : "border-transparent",
+            ]}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <a
+      href="/membership/"
+      class="hidden min-[1120px]:inline-flex items-center shrink-0 bg-red text-on-red text-label px-lg py-md min-h-11 whitespace-nowrap hover:bg-red-ink"
+    >
+      Join SAT
+    </a>
+
+    <button
+      id="nav-burger"
+      type="button"
+      aria-label="Menu"
+      aria-expanded="false"
+      aria-controls="mobile-nav-panel"
+      class="min-[1120px]:hidden flex flex-col justify-center items-center gap-[5px] w-11 h-11 ml-auto border-0 bg-transparent cursor-pointer"
+    >
+      <span class="block w-6 h-px bg-ink"></span>
+      <span class="block w-6 h-px bg-ink"></span>
+      <span class="block w-6 h-px bg-ink"></span>
+    </button>
+  </div>
+
+  <div
+    id="mobile-nav-panel"
+    class="hidden min-[1120px]:!hidden fixed inset-0 top-[var(--header-h,0px)] z-40 bg-canvas overflow-y-auto"
+  >
+    <nav aria-label="Primary" class="flex flex-col">
+      {
+        navLinks.map((link) => (
+          <a
+            href={link.href}
+            aria-current={link.key === current ? "page" : undefined}
+            class:list={[
+              "text-body-md px-5 py-lg border-t border-rule first:border-t-0",
+              link.key === current ? "text-red-ink" : "text-ink",
+            ]}
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <a href="/membership/" class="text-body-md px-5 py-lg border-t border-rule text-red-ink">
+        Join SAT
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const header = document.getElementById("site-header") as HTMLElement;
+  const logo = document.getElementById("brand-logo") as HTMLImageElement;
+  const burger = document.getElementById("nav-burger") as HTMLButtonElement;
+  const panel = document.getElementById("mobile-nav-panel") as HTMLElement;
+
+  const setHeaderHeight = () => {
+    header.style.setProperty("--header-h", `${header.offsetHeight}px`);
+  };
+  setHeaderHeight();
+  window.addEventListener("resize", setHeaderHeight);
+
+  const onScroll = () => {
+    const compact = window.scrollY > 180;
+    logo.classList.toggle("h-[88px]", compact);
+    logo.classList.toggle("h-[150px]", !compact);
+    setHeaderHeight();
+  };
+  onScroll();
+  window.addEventListener("scroll", onScroll, { passive: true });
+
+  const closePanel = () => {
+    panel.classList.add("hidden");
+    burger.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  };
+  const openPanel = () => {
+    panel.classList.remove("hidden");
+    burger.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  };
+
+  burger.addEventListener("click", () => {
+    const isOpen = burger.getAttribute("aria-expanded") === "true";
+    isOpen ? closePanel() : openPanel();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && burger.getAttribute("aria-expanded") === "true") {
+      closePanel();
+      burger.focus();
+    }
+  });
+
+  window.addEventListener("resize", () => {
+    if (window.innerWidth >= 1120) closePanel();
+  });
+</script>

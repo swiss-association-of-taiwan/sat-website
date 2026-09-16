@@ -1,0 +1,21 @@
+---
+interface Props {
+  items: { href: string; label: string }[];
+}
+
+const { items } = Astro.props;
+---
+
+<nav
+  aria-label="On this page"
+  class="md:sticky md:top-[140px] flex flex-wrap gap-x-lg gap-y-xs md:block md:gap-0"
+>
+  <div class="hidden md:block text-label text-ink pb-md border-b border-ink w-full">On this page</div>
+  {
+    items.map((item) => (
+      <a href={item.href} class="block text-body-sm text-body hover:text-red-ink md:py-[10px]">
+        {item.label}
+      </a>
+    ))
+  }
+</nav>
