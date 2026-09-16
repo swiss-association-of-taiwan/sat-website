@@ -64,7 +64,13 @@ membershipCta:
 
 contactCards:
   - title: "Consular matters"
-    body: "SAT is a community association, not an official body. For practical assistance to Swiss nationals in Taiwan and for visa requests, please contact the Trade Office of Swiss Industries."
+    bodyBefore: "SAT is a community association, not an official body. For practical assistance to Swiss nationals in Taiwan and for visa requests, please contact the "
+    linkText: "Trade Office of Swiss Industries"
+    linkHref: "https://www.facebook.com/TOSITaipei/"
+    bodyAfter: "."
   - title: "Doing business"
-    body: "Looking to do business in Switzerland or Taiwan? The Swiss-Taiwan Business Alliance advises companies on both markets and hosts its own programme of events."
+    bodyBefore: "Looking to do business in Switzerland or Taiwan? The "
+    linkText: "Swiss-Taiwan Business Alliance"
+    linkHref: "https://swiss-taiwan.org/"
+    bodyAfter: " advises companies on both markets and hosts its own programme of events."
 ---

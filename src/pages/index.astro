@@ -127,7 +127,17 @@ const { hero, nextEvent, audience, eventsTeaser, membershipCta, contactCards } =
           {contactCards.map((card) => (
             <div class="border-t border-ink pt-lg">
               <h3 class="text-heading-lg text-ink">{card.title}</h3>
-              <p class="text-body-md text-body mt-sm max-w-[68ch]">{card.body}</p>
+              <p class="text-body-md text-body mt-sm max-w-[68ch]">
+                {card.bodyBefore}
+                {card.linkHref ? (
+                  <a href={card.linkHref} target="_blank" rel="noopener" class="link-inline">
+                    {card.linkText}
+                  </a>
+                ) : (
+                  card.linkText
+                )}
+                {card.bodyAfter}
+              </p>
             </div>
           ))}
         </div>
