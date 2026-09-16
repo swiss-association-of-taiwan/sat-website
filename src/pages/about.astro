@@ -6,13 +6,16 @@ import Section from "../components/Section.astro";
 import ImageFigure from "../components/ImageFigure.astro";
 import DocumentCard from "../components/DocumentCard.astro";
 import TocNav from "../components/TocNav.astro";
-import { renderMarkdown } from "../lib/markdown";
+import { parseArticleBody } from "../lib/articleBody";
 
 const page = await getEntry("pages", "about");
 if (!page) throw new Error("Missing content/pages/about.md");
-const { title, subtitle, intro, heroImage, toc, archiveFigures, documents, definitionRows, closing } = page.data;
+const { title, subtitle, intro, heroImage, toc, archiveFigures, documents, definitionRows, articlesLink, closing } =
+  page.data;
 
-const bodyHtml = renderMarkdown(page.body ?? "");
+const blocks = parseArticleBody(page.body ?? "");
+const figureByKey = new Map((archiveFigures ?? []).map((f) => [f.key, f]));
+const documentByKey = new Map((documents ?? []).map((d) => [d.key, d]));
 
 const committee = (await getCollection("committee")).sort((a, b) => a.data.order - b.data.order);
 ---
@@ -34,40 +37,54 @@ const committee = (await getCollection("committee")).sort((a, b) => a.data.order
         <TocNav items={toc ?? []} />
 
         <div>
-          <div id="how-it-started" class="article-body" set:html={bodyHtml} />
+          <div id="how-it-started" class="article-body">
+            {
+              blocks.map((block) => {
+                if (block.kind === "html") return <Fragment set:html={block.html} />;
 
-          {
-            archiveFigures && archiveFigures.length > 0 && (
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-xl mt-12">
-                {archiveFigures.map((fig) => (
-                  <ImageFigure src={fig.src} alt={fig.alt} caption={fig.caption} ratio="3:2" grayscale />
-                ))}
-              </div>
-            )
-          }
+                if (block.kind === "figureGroup") {
+                  const figures = block.keys.map((k) => figureByKey.get(k)).filter((f) => f !== undefined);
+                  return (
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-xl !mt-12">
+                      {figures.map((fig) => (
+                        <ImageFigure src={fig.src} alt={fig.alt} caption={fig.caption} ratio="3:2" grayscale />
+                      ))}
+                    </div>
+                  );
+                }
 
-          {
-            documents && documents.filter((d) => d.href).length > 0 && (
-              <div class="grid grid-cols-1 sm:grid-cols-2 gap-lg mt-10">
-                {documents.map((doc) => (
-                  <DocumentCard href={doc.href} label={doc.label} title={doc.title} description={doc.description} />
-                ))}
-              </div>
-            )
-          }
+                if (block.kind === "documentGroup") {
+                  const docs = block.keys.map((k) => documentByKey.get(k)).filter((d) => d !== undefined);
+                  return (
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-lg !mt-10">
+                      {docs.map((doc) => (
+                        <DocumentCard href={doc.href} label={doc.label} title={doc.title} description={doc.description} />
+                      ))}
+                    </div>
+                  );
+                }
 
-          {
-            definitionRows && definitionRows.length > 0 && (
-              <div class="mt-12 border-t border-ink">
-                {definitionRows.map((row) => (
-                  <div class="flex flex-wrap gap-x-lg gap-y-xs py-lg border-b border-rule">
-                    <div class="basis-[132px] shrink-0 text-label text-ink pt-1">{row.label}</div>
-                    <div class="flex-1 min-w-[200px] text-body-md text-body max-w-[68ch]">{row.value}</div>
-                  </div>
-                ))}
-              </div>
-            )
-          }
+                if (block.kind === "definitionRows") {
+                  return (
+                    <div class="!mt-12 border-t border-ink">
+                      {(definitionRows ?? []).map((row) => (
+                        <div class="flex flex-wrap gap-x-lg gap-y-xs py-lg border-b border-rule">
+                          <div class="basis-[132px] shrink-0 text-label text-ink pt-1">{row.label}</div>
+                          <div class="flex-1 min-w-[200px] text-body-md text-body max-w-[68ch]">{row.value}</div>
+                        </div>
+                      ))}
+                    </div>
+                  );
+                }
+
+                if (block.kind === "emphasis") {
+                  return <p class="text-display-quiet text-ink !mt-10 max-w-[26ch]">{block.text}</p>;
+                }
+
+                return null;
+              })
+            }
+          </div>
 
           <section id="committee" class="mt-12 md:mt-16 border-t border-ink pt-10 md:pt-14">
             <h2 class="text-heading-lg text-ink max-w-[26ch]">Our Committee</h2>
@@ -100,6 +117,18 @@ const committee = (await getCollection("committee")).sort((a, b) => a.data.order
                 ))
               }
             </div>
+
+            <p class="text-body-md text-body mt-12 pt-lg border-t border-ink max-w-[68ch]">
+              Want to know more about how SAT is structured and governed? You can read our{" "}
+              {articlesLink ? (
+                <a href={articlesLink} target="_blank" rel="noopener" class="link-inline">
+                  Association Articles
+                </a>
+              ) : (
+                "Association Articles"
+              )}{" "}
+              here.
+            </p>
           </section>
         </div>
       </div>

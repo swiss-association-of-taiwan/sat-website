@@ -72,7 +72,17 @@ const pages = defineCollection({
         secondaryHref: z.string(),
       })
       .optional(),
-    contactCards: z.array(z.object({ title: z.string(), body: z.string() })).optional(),
+    contactCards: z
+      .array(
+        z.object({
+          title: z.string(),
+          bodyBefore: z.string(),
+          linkText: z.string(),
+          linkHref: z.string().optional(),
+          bodyAfter: z.string(),
+        }),
+      )
+      .optional(),
 
     // About only
     heroImage: z
@@ -83,12 +93,15 @@ const pages = defineCollection({
       })
       .optional(),
     toc: z.array(z.object({ href: z.string(), label: z.string() })).optional(),
+    // Keyed by the {{figure:key}} / {{document:key}} markers in the markdown
+    // body below — see src/lib/articleBody.ts.
     archiveFigures: z
-      .array(z.object({ src: z.string(), alt: z.string(), caption: z.string(), enlargeLabel: z.string() }))
+      .array(z.object({ key: z.string(), src: z.string(), alt: z.string(), caption: z.string() }))
       .optional(),
     documents: z
       .array(
         z.object({
+          key: z.string(),
           href: z.string().optional(),
           label: z.string(),
           title: z.string(),

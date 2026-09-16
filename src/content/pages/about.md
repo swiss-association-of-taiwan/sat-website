@@ -25,36 +25,36 @@ toc:
     label: "Our committee"
 
 archiveFigures:
-  - src: "/images/archive-tages-anzeiger.jpg"
+  - key: "tages-anzeiger"
+    src: "/images/archive-tages-anzeiger.jpg"
     alt: "Tages-Anzeiger article on the founding of the Swiss Association of Taiwan, December 1990"
     caption: "Tages-Anzeiger, 11 December 1990. Report from Taipei on the founding of the association. Click to enlarge."
-    enlargeLabel: "Enlarge the Tages-Anzeiger clipping"
-  - src: "/images/archive-president-message.jpg"
+  - key: "president-message"
+    src: "/images/archive-president-message.jpg"
     alt: "Typed message from founding President Hans-Ruedi Burkhalter"
     caption: "Message from founding President Hans-Ruedi Burkhalter, printed in Bulletin 00."
-    enlargeLabel: "Enlarge the founding President's message"
 
 documents:
-  - href: "https://drive.google.com/file/d/1sPBS2rkTVuEO9MmRAr5rpOibPIs1Z5WH/view?usp=sharing"
+  - key: "bulletin-00"
+    href: "https://drive.google.com/file/d/1sPBS2rkTVuEO9MmRAr5rpOibPIs1Z5WH/view?usp=sharing"
     label: "Archive · 1990"
     title: "Bulletin 00"
     description: "Scanned PDF, 8 pages. Opens in a new tab."
-  - href: "https://drive.google.com/file/d/1Wi45xD9QUBnOFwijwjuLOQktJ7WAWKHi/view?usp=sharing"
+  - key: "tell-1"
+    href: "https://drive.google.com/file/d/1Wi45xD9QUBnOFwijwjuLOQktJ7WAWKHi/view?usp=sharing"
     label: "Archive · November 1991"
     title: "TELL No. 1"
     description: "Scanned PDF, 48 pages. Opens in a new tab."
-  # Association Articles card: SAT hasn't supplied the Google Drive link yet.
-  # No href = no card, per handoff/SAT-DESIGN.md ("if it can't be justified,
-  # delete it"). Add the href above and this card appears automatically.
-  - title: "Association Articles"
-    label: "Governance"
-    description: "How SAT is structured and governed."
 
 definitionRows:
   - label: "Election"
     value: "SAT members elect the committee each year at the Annual General Meeting. It consists of a President, Vice President, Treasurer and at least two additional members."
   - label: "Articles"
     value: "In accordance with the Association Articles, the President must be a Swiss national and no more than two non-Swiss members may serve on the committee at the same time."
+
+# SAT hasn't supplied the Google Drive link yet. Empty = the sentence below
+# renders with plain text instead of a link — never a placeholder href.
+articlesLink: ""
 
 closing:
   title: "Come and see for yourself"
@@ -77,6 +77,9 @@ The idea was simple: bring together the relatively small Swiss community in Taiw
 
 A few weeks after SAT was founded, the Tages-Anzeiger reported from Taipei on the launch of the new Swiss association. The original clipping survives in SAT's first bulletin and offers a glimpse of a community that was only just getting started.
 
+{{figure:tages-anzeiger}}
+{{figure:president-message}}
+
 ## Before websites, email and WhatsApp
 
 Staying connected looked rather different in those days.
@@ -86,6 +89,9 @@ There was no SAT website, no group chat and no online event calendar. News, even
 SAT's early Bulletin 00 already included an activity calendar, Jass tournament information, committee contacts and a notice board where members could share announcements with one another. From the beginning, members were encouraged to suggest activities and contribute ideas. More than 35 years later, we still want SAT to work that way.
 
 Later in 1991, the association launched the first issue of TELL, the Swiss bulletin that continued that role for the community. The November 1991 issue included committee news, Swiss National Day photos, Jass, sports, charity activities and even a printed membership list, a small snapshot of Swiss life in Taiwan before the internet.
+
+{{document:bulletin-00}}
+{{document:tell-1}}
 
 ## From 700 to 750
 
@@ -97,7 +103,9 @@ Today we can video-call family in Switzerland in seconds, follow Swiss news as i
 
 Sometimes it is easy to forget that Switzerland is still more than 9,000 kilometres away.
 
+{{emphasis}}
 But some things have not changed very much.
+{{/emphasis}}
 
 After a while in Taiwan, it can still be surprisingly nice to hear a familiar language, sit around a table with some raclette, enjoy food from home and spend an evening with people who share some of the same experiences.
 
@@ -117,7 +125,9 @@ You might also be Taiwanese and have lived, worked or studied in Switzerland. Ma
 
 Or perhaps you have never lived in Switzerland at all, but have Swiss friends, family connections or simply an interest in the country.
 
+{{emphasis}}
 You are all welcome.
+{{/emphasis}}
 
 Our events are open regardless of nationality or membership. Come for an apéro, bring your family or friends, have some Swiss food and meet people.
 
@@ -138,5 +148,7 @@ SAT is a volunteer-run association.
 The events do not organize themselves. Someone orders the cheese, talks to the venue, keeps track of registrations, answers messages, manages the finances and makes sure things are ready when everyone arrives.
 
 All committee members do this in an honorary capacity alongside their regular work and lives.
+
+{{definitionRows}}
 
 If you have an idea for an activity, would like to lend a hand from time to time or are interested in joining the committee yourself, have a look at our [Get Involved](/get-involved/) page.

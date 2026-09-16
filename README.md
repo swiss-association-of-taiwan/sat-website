@@ -21,4 +21,4 @@ All commands run from the project root:
 
 ## Editing content after launch
 
-See [`handoff/EDITING.md`](handoff/EDITING.md).
+See [`EDITING.md`](EDITING.md).
