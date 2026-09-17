@@ -14,6 +14,8 @@ import { renderMarkdown } from "./markdown";
 //                                  frontmatter.definitionRows block
 //   {{luma}}                       self-closing, renders the Luma calendar
 //                                  embed from frontmatter.lumaSrc
+//   {{originalLogo}}                self-closing, renders the framed brand
+//                                  mark from frontmatter.originalLogo
 //   {{emphasis}} ... {{/emphasis}} wraps a short display-quiet aside
 //   {{lead}} ... {{/lead}}         wraps a paragraph that should read at
 //                                  body-lead (21px) size — used exactly
@@ -29,12 +31,14 @@ export type ArticleBlock =
   | { kind: "documentGroup"; keys: string[] }
   | { kind: "definitionRows" }
   | { kind: "luma" }
+  | { kind: "originalLogo" }
   | { kind: "emphasis"; text: string }
   | { kind: "lead"; text: string };
 
 const SELF_CLOSING = /^\{\{(figure|document):([\w-]+)\}\}$/;
 const DEFINITION_ROWS = /^\{\{definitionRows\}\}$/;
 const LUMA = /^\{\{luma\}\}$/;
+const ORIGINAL_LOGO = /^\{\{originalLogo\}\}$/;
 const EMPHASIS_OPEN = /^\{\{emphasis\}\}$/;
 const EMPHASIS_CLOSE = /^\{\{\/emphasis\}\}$/;
 const LEAD_OPEN = /^\{\{lead\}\}$/;
@@ -81,6 +85,13 @@ export function parseArticleBody(source: string): ArticleBlock[] {
     if (LUMA.test(line)) {
       flushHtml();
       blocks.push({ kind: "luma" });
+      i++;
+      continue;
+    }
+
+    if (ORIGINAL_LOGO.test(line)) {
+      flushHtml();
+      blocks.push({ kind: "originalLogo" });
       i++;
       continue;
     }

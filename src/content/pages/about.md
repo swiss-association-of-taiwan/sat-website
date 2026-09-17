@@ -38,6 +38,11 @@ figures:
     ratio: "3:2"
     grayscale: true
 
+originalLogo:
+  src: "/images/sat-original-logo.png"
+  alt: "SAT's original emblem: the Swiss cross above two Taiwanese dragon boats"
+  caption: "SAT's original emblem, in use from the founding years: the Swiss cross above two dragon boats."
+
 documents:
   - key: "bulletin-00"
     href: "/docs/bulletin-00-1990.pdf"
@@ -78,6 +83,8 @@ Switzerland was about to celebrate the 700th anniversary of the Confederation in
 > "What better occasion than the 700th Anniversary year of our country's Confederation for us to start a Swiss Association here in Taiwan!"
 >
 > Hans-Ruedi Burkhalter, founding President, 1990
+
+{{originalLogo}}
 
 The idea was simple: bring together the relatively small Swiss community in Taiwan, welcome friends of Switzerland, keep some familiar traditions alive and make life a little easier for people newly arriving far from home.
 

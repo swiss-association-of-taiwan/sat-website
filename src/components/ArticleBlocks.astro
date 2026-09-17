@@ -23,6 +23,11 @@ interface DefinitionRow {
   label: string;
   value: string;
 }
+interface OriginalLogo {
+  src: string;
+  alt: string;
+  caption: string;
+}
 
 interface Props {
   blocks: ArticleBlock[];
@@ -30,13 +35,15 @@ interface Props {
   documents?: Doc[];
   definitionRows?: DefinitionRow[];
   lumaSrc?: string;
+  originalLogo?: OriginalLogo;
   /** When set, every figure here becomes a lightbox trigger in this group —
       pair with a sibling <Lightbox groupId={...}> and register the group's
       image list (see about.astro for the pattern). */
   lightboxGroup?: string;
 }
 
-const { blocks, figures = [], documents = [], definitionRows = [], lumaSrc, lightboxGroup } = Astro.props;
+const { blocks, figures = [], documents = [], definitionRows = [], lumaSrc, originalLogo, lightboxGroup } =
+  Astro.props;
 const figureByKey = new Map(figures.map((f) => [f.key, f]));
 const documentByKey = new Map(documents.map((d) => [d.key, d]));
 
@@ -103,6 +110,17 @@ let lightboxCursor = 0;
               allowfullscreen
             />
           </div>
+        );
+      }
+
+      if (block.kind === "originalLogo" && originalLogo) {
+        return (
+          <figure class="max-w-[300px] !mt-12 m-0">
+            <div class="border border-ink bg-canvas p-lg">
+              <img src={withBase(originalLogo.src)} alt={originalLogo.alt} class="w-full h-auto" />
+            </div>
+            <figcaption class="text-caption text-body border-t border-rule mt-sm pt-sm">{originalLogo.caption}</figcaption>
+          </figure>
         );
       }
 
