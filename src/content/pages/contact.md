@@ -8,15 +8,12 @@ subtitle: "Have a question about SAT, our events or membership? Send us a messag
 formalooSlug: ""
 
 directContacts:
-  - label: "General enquiries"
-    email: "contact@swissassociation.tw"
   - label: "President"
     email: "president@swissassociation.tw"
   - label: "Membership"
     email: "president@swissassociation.tw"
 
 locationLabel: "Taipei, Taiwan"
-phone: "+886 909 711 242"
 
 note:
   bodyBefore: "SAT is a community association, not an official body. For consular assistance to Swiss nationals in Taiwan, please contact the "

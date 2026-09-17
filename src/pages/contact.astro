@@ -7,7 +7,7 @@ import ClosingCta from "../components/ClosingCta.astro";
 
 const page = await getEntry("pages", "contact");
 if (!page) throw new Error("Missing content/pages/contact.md");
-const { title, subtitle, formalooSlug, directContacts, locationLabel, phone, note, closing } = page.data;
+const { title, subtitle, formalooSlug, directContacts, locationLabel, note, closing } = page.data;
 ---
 
 <Layout title={title} current="contact">
@@ -59,27 +59,22 @@ const { title, subtitle, formalooSlug, directContacts, locationLabel, phone, not
             ))
           }
           {
-            (locationLabel || phone) && (
+            (locationLabel || note) && (
               <div class="border-t border-rule pt-lg">
-                {locationLabel && <div class="text-label text-ink">{locationLabel}</div>}
-                {phone && <div class="text-body-md text-body mt-xs">{phone}</div>}
-              </div>
-            )
-          }
-          {
-            note && (
-              <div class="border-t border-rule pt-lg">
-                <p class="text-body-sm text-body">
-                  {note.bodyBefore}
-                  {note.linkHref ? (
-                    <a href={note.linkHref} target="_blank" rel="noopener" class="link-inline">
-                      {note.linkText}
-                    </a>
-                  ) : (
-                    note.linkText
-                  )}
-                  {note.bodyAfter}
-                </p>
+                {locationLabel && <div class="text-body-md text-ink">{locationLabel}</div>}
+                {note && (
+                  <p class="text-body-sm text-body mt-sm">
+                    {note.bodyBefore}
+                    {note.linkHref ? (
+                      <a href={note.linkHref} target="_blank" rel="noopener" class="link-inline">
+                        {note.linkText}
+                      </a>
+                    ) : (
+                      note.linkText
+                    )}
+                    {note.bodyAfter}
+                  </p>
+                )}
               </div>
             )
           }

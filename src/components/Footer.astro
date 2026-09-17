@@ -43,9 +43,10 @@ const socialMarks = [
 
 <footer class="bg-ink text-on-dark">
   <div class="max-w-content mx-auto px-5 lg:px-16 pt-16 md:pt-24 pb-10">
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-lg gap-y-2xl">
+    <div class="grid grid-cols-1 min-[641px]:grid-cols-2 min-[1025px]:grid-cols-3 gap-x-lg gap-y-2xl">
       <div>
         <img src="/images/logo-v4-white.png" alt="Swiss Association of Taiwan" class="w-full max-w-[240px] h-auto" />
+        <div class="text-body-sm text-on-dark mt-lg">Taipei, Taiwan</div>
       </div>
 
       <div class="flex flex-col gap-sm">
@@ -58,15 +59,12 @@ const socialMarks = [
         }
       </div>
 
-      <div class="flex flex-col gap-sm">
-        <a href="mailto:contact@swissassociation.tw" class="text-body-sm text-on-dark break-words hover:underline">
-          contact@swissassociation.tw
-        </a>
-        <div class="text-body-sm text-on-dark">+886 909 711 242</div>
-        <div class="text-body-sm text-on-dark">Taipei, Taiwan</div>
-      </div>
-
-      <div class="border-t border-on-dark pt-lg sm:border-t-0 sm:border-l sm:pt-0 sm:pl-xl">
+      <div
+        class:list={[
+          "border-t border-on-dark pt-lg col-span-full",
+          "min-[1025px]:border-t-0 min-[1025px]:pt-0 min-[1025px]:border-l min-[1025px]:pl-xl min-[1025px]:col-span-1",
+        ]}
+      >
         <p class="text-display-quiet text-on-dark max-w-[14ch]">Different backgrounds. A shared connection.</p>
       </div>
     </div>
