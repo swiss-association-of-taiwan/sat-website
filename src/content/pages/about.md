@@ -61,9 +61,7 @@ definitionRows:
   - label: "Articles"
     value: "In accordance with the Association Articles, the President must be a Swiss national and no more than two non-Swiss members may serve on the committee at the same time."
 
-# SAT hasn't supplied the Google Drive link yet. Empty = the sentence below
-# renders with plain text instead of a link — never a placeholder href.
-articlesLink: ""
+articlesLink: "/docs/sat-articles-of-association-2019.pdf"
 
 closing:
   title: "Come and see for yourself"
