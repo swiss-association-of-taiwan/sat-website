@@ -8,12 +8,13 @@ interface Props {
   primaryHref: string;
   secondaryLabel?: string;
   secondaryHref?: string;
+  padY?: string;
 }
 
-const { title, body, primaryLabel, primaryHref, secondaryLabel, secondaryHref } = Astro.props;
+const { title, body, primaryLabel, primaryHref, secondaryLabel, secondaryHref, padY } = Astro.props;
 ---
 
-<Section background="canvas-soft" borderTop>
+<Section background="canvas-soft" borderTop padY={padY}>
   <h2 class="text-heading-lg text-ink max-w-[26ch]">{title}</h2>
   <p class="text-body-lead text-body mt-lg max-w-[68ch]">{body}</p>
   <div class="flex flex-wrap gap-md mt-10">
