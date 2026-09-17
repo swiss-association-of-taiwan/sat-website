@@ -1,4 +1,5 @@
 import { Marked } from "marked";
+import { withBase } from "./url";
 
 function slugify(text: string): string {
   return text
@@ -20,7 +21,7 @@ const marked = new Marked({
     link({ href, title, tokens }) {
       const text = this.parser.parseInline(tokens);
       const titleAttr = title ? ` title="${title}"` : "";
-      return `<a href="${href}"${titleAttr} class="link-inline">${text}</a>`;
+      return `<a href="${withBase(href)}"${titleAttr} class="link-inline">${text}</a>`;
     },
   },
 });

@@ -23,6 +23,7 @@ pnpm-debug.log*
 # jetbrains setting folder
 .idea/
 
-# handoff/pages/*.html is the design spec, inline-styled and not meant to
-# ship — see handoff/README.md "the one rule that matters".
-handoff/pages/
+# Design reference, not source — everything needed from it (content,
+# images, tokens) has been migrated into src/ and public/. See
+# handoff/README.md "the one rule that matters".
+handoff/

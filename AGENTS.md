@@ -1,24 +1,26 @@
 ## Source of truth
 
-This is the real swissassociation.tw, built from the handoff package in `handoff/`.
-Read `handoff/BUILD.md` first — it is the build order. Then:
-
-- `handoff/SAT-DESIGN.md` — the design system. Authoritative on every visual question.
-- `handoff/SAT-DESIGN-ADDENDUM.md` — decisions and components the design file
-  doesn't cover. Wins where SAT-DESIGN.md is silent.
-- `handoff/pages/*.html` — layout/structure/section order reference only. Never a
-  source of colour, size or spacing values, and not committed to this repo
-  (`handoff/pages/` is gitignored).
-- `handoff/content/SAT-page-content-JP.docx` — page copy, authoritative on every
-  word. Copied verbatim into `src/content/pages/`.
-- `handoff/impressions.json` — occasion tags for the photo mosaic, mirrored into
-  `src/data/impressions.json`.
+This is the real swissassociation.tw. It was built from a handoff package the client
+supplied at `handoff/` — design mockups, copy and assets — but that folder is
+gitignored entirely now that everything needed from it lives in `src/` and `public/`.
+It only exists in the original working directory, not in a fresh clone. If you have
+it locally: `handoff/BUILD.md` was the build order, `handoff/SAT-DESIGN.md` the
+design system, `handoff/SAT-DESIGN-ADDENDUM.md` the gap-filling decisions.
 
 Design tokens live in `src/styles/global.css` as a Tailwind v4 `@theme` block,
-generated from `SAT-DESIGN.md`'s YAML front matter. Component code uses the token
+generated from SAT-DESIGN.md's YAML front matter. Component code uses the token
 utility classes from there (`text-display-xl`, `bg-canvas-soft`, `p-lg`, …) —
 never raw hex or px values. The default Tailwind color/font-size/radius scales are
 disabled on purpose so nothing outside the design system is reachable.
+
+## Deployment and the `base` path
+
+Deployed to GitHub Pages as a project page — `astro.config.mjs` hardcodes
+`base: '/sat-website'`, so local dev also serves under that path. Every internal
+href/src in the codebase must go through `withBase()` from `src/lib/url.ts` (it's a
+no-op on external URLs, mailto:, tel: and hash anchors, so it's safe to wrap
+indiscriminately). Do not write a bare `href="/about/"` or `src="/images/…"`
+anywhere — it will 404.
 
 ## Development
 

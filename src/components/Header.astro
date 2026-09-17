@@ -1,5 +1,6 @@
 ---
 import { navLinks, type NavKey } from "../lib/nav";
+import { withBase } from "../lib/url";
 
 interface Props {
   current: NavKey;
@@ -10,10 +11,10 @@ const { current } = Astro.props;
 
 <header id="site-header" class="sticky top-0 z-50 bg-canvas border-b border-ink">
   <div class="max-w-content mx-auto flex items-center justify-between gap-lg px-5 lg:px-16 py-md">
-    <a href="/" class="shrink-0">
+    <a href={withBase("/")} class="shrink-0">
       <img
         id="brand-logo"
-        src="/images/logo-v4.png"
+        src={withBase("/images/logo-v4.png")}
         alt="Swiss Association of Taiwan"
         class="h-[150px] max-[700px]:h-[74px] w-auto transition-[height] duration-200 ease-out"
       />
@@ -23,7 +24,7 @@ const { current } = Astro.props;
       {
         navLinks.map((link) => (
           <a
-            href={link.href}
+            href={withBase(link.href)}
             aria-current={link.key === current ? "page" : undefined}
             class:list={[
               "text-body-sm text-ink whitespace-nowrap pb-1 border-b-2 hover:text-red-ink",
@@ -37,7 +38,7 @@ const { current } = Astro.props;
     </nav>
 
     <a
-      href="/membership/"
+      href={withBase("/membership/")}
       class="hidden min-[1120px]:inline-flex items-center shrink-0 bg-red text-on-red text-label px-lg py-md min-h-11 whitespace-nowrap hover:bg-red-ink"
     >
       Join SAT
@@ -65,7 +66,7 @@ const { current } = Astro.props;
       {
         navLinks.map((link) => (
           <a
-            href={link.href}
+            href={withBase(link.href)}
             aria-current={link.key === current ? "page" : undefined}
             class:list={[
               "text-body-md px-5 py-lg border-t border-rule first:border-t-0",
@@ -76,7 +77,7 @@ const { current } = Astro.props;
           </a>
         ))
       }
-      <a href="/membership/" class="text-body-md px-5 py-lg border-t border-rule text-red-ink">
+      <a href={withBase("/membership/")} class="text-body-md px-5 py-lg border-t border-rule text-red-ink">
         Join SAT
       </a>
     </nav>

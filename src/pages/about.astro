@@ -8,6 +8,7 @@ import ArticleBlocks from "../components/ArticleBlocks.astro";
 import ClosingCta from "../components/ClosingCta.astro";
 import Lightbox from "../components/Lightbox.astro";
 import { parseArticleBody } from "../lib/articleBody";
+import { withBase } from "../lib/url";
 
 const page = await getEntry("pages", "about");
 if (!page) throw new Error("Missing content/pages/about.md");
@@ -24,7 +25,7 @@ const committee = (await getCollection("committee")).sort((a, b) => a.data.order
   {
     heroImage && (
       <div class="max-w-content mx-auto px-5 lg:px-16 pb-12 md:pb-22">
-        <ImageFigure src={heroImage.src} alt={heroImage.alt} caption={heroImage.caption} ratio="21:9" />
+        <ImageFigure src={withBase(heroImage.src)} alt={heroImage.alt} caption={heroImage.caption} ratio="21:9" />
       </div>
     )
   }
@@ -53,7 +54,7 @@ const committee = (await getCollection("committee")).sort((a, b) => a.data.order
                   <div>
                     {member.data.photo ? (
                       <img
-                        src={member.data.photo}
+                        src={withBase(member.data.photo)}
                         alt={member.data.name}
                         class="w-full aspect-square object-cover"
                       />
@@ -96,7 +97,7 @@ const committee = (await getCollection("committee")).sort((a, b) => a.data.order
 
   {closing && <ClosingCta {...closing} />}
 
-  <script define:vars={{ images: (figures ?? []).map((f) => ({ src: f.src, alt: f.alt })) }}>
+  <script define:vars={{ images: (figures ?? []).map((f) => ({ src: withBase(f.src), alt: f.alt })) }}>
     window.__lightboxGroups = window.__lightboxGroups || {};
     window.__lightboxGroups["about-archive"] = images;
   </script>
