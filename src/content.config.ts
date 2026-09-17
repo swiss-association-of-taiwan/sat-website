@@ -120,6 +120,16 @@ const pages = defineCollection({
         }),
       )
       .optional(),
+    // The framed brand-mark figure — reached via {{originalLogo}} in the
+    // body. Distinct from figures[] because it's a bordered, padded,
+    // narrow frame around a mark, not an edge-to-edge photo.
+    originalLogo: z
+      .object({
+        src: z.string(),
+        alt: z.string(),
+        caption: z.string(),
+      })
+      .optional(),
     // Shared by About, Events (Before you register), reached via
     // {{definitionRows}} in the body.
     definitionRows: z.array(z.object({ label: z.string(), value: z.string() })).optional(),
