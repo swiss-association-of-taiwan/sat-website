@@ -4,11 +4,12 @@ import Layout from "../layouts/Layout.astro";
 import PageHeader from "../components/PageHeader.astro";
 import Section from "../components/Section.astro";
 import ArticleBlocks from "../components/ArticleBlocks.astro";
+import ClosingCta from "../components/ClosingCta.astro";
 import { parseArticleBody } from "../lib/articleBody";
 
 const page = await getEntry("pages", "membership");
 if (!page) throw new Error("Missing content/pages/membership.md");
-const { title, subtitle, figures, fees, formalooSlug } = page.data;
+const { title, subtitle, figures, fees, formalooSlug, closing } = page.data;
 
 const blocks = parseArticleBody(page.body ?? "");
 ---
@@ -59,14 +60,5 @@ const blocks = parseArticleBody(page.body ?? "");
     }
   </Section>
 
-  <Section background="canvas-soft" borderTop>
-    <div class="flex flex-wrap gap-md">
-      <a href="/events/" class="inline-flex items-center bg-red text-on-red text-label px-lg py-md min-h-11 hover:bg-red-ink">
-        See all events
-      </a>
-      <a href="/about/" class="inline-flex items-center bg-canvas-soft text-ink border border-ink text-label px-lg py-md min-h-11 hover:bg-ink hover:text-on-dark">
-        More about SAT
-      </a>
-    </div>
-  </Section>
+  {closing && <ClosingCta {...closing} padY="py-[clamp(48px,6vw,72px)]" />}
 </Layout>

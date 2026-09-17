@@ -3,15 +3,19 @@ interface Props {
   background?: "canvas" | "canvas-soft";
   borderTop?: boolean;
   class?: string;
+  /** Escape hatch for a section whose vertical padding differs from the
+      standard 64/128px rhythm — pass a Tailwind arbitrary-value class,
+      e.g. "py-[clamp(48px,6vw,72px)]". Defaults to the standard rhythm. */
+  padY?: string;
 }
 
-const { background = "canvas", borderTop = false, class: className } = Astro.props;
+const { background = "canvas", borderTop = false, class: className, padY } = Astro.props;
 
 const bgClass = background === "canvas-soft" ? "bg-canvas-soft" : "bg-canvas";
 ---
 
 <section class:list={[bgClass, borderTop && "border-t border-rule", className]}>
-  <div class="max-w-content mx-auto px-5 lg:px-16 py-16 md:py-section">
+  <div class:list={["max-w-content mx-auto px-5 lg:px-16", padY ?? "py-16 md:py-section"]}>
     <slot />
   </div>
 </section>

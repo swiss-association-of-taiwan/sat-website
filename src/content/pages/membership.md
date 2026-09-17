@@ -17,6 +17,16 @@ fees:
     amount: "NT$2,000"
 
 formalooSlug: "xL3snJh7"
+
+# FLAG FOR CLIENT REVIEW: this copy was written in the design pass, not
+# supplied by SAT — confirm wording before launch.
+closing:
+  title: "Rather have a look around first?"
+  body: "Guests are welcome at most events, and membership can wait until you have met a few of us."
+  primaryLabel: "See all events"
+  primaryHref: "/events/"
+  secondaryLabel: "More about SAT"
+  secondaryHref: "/about/"
 ---
 
 SAT is built around people who share an interest in Switzerland and in bringing the Swiss community in Taiwan together.
