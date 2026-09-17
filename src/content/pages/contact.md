@@ -11,7 +11,7 @@ directContacts:
   - label: "President"
     email: "president@swissassociation.tw"
   - label: "Membership"
-    email: "president@swissassociation.tw"
+    email: "treasurer@swissassociation.tw"
 
 locationLabel: "Taipei, Taiwan"
 

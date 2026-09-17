@@ -66,7 +66,7 @@ contactCards:
   - title: "Consular matters"
     bodyBefore: "SAT is a community association, not an official body. For practical assistance to Swiss nationals in Taiwan and for visa requests, please contact the "
     linkText: "Trade Office of Swiss Industries"
-    linkHref: "https://www.facebook.com/TOSITaipei/"
+    linkHref: "https://www.schweiz-taiwan.eda.admin.ch/en"
     bodyAfter: "."
   - title: "Doing business"
     bodyBefore: "Looking to do business in Switzerland or Taiwan? The "

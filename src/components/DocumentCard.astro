@@ -1,4 +1,6 @@
 ---
+import { withBase } from "../lib/url";
+
 interface Props {
   href?: string;
   label: string;
@@ -12,7 +14,7 @@ const { href, label, title, description } = Astro.props;
 {
   href && (
     <a
-      href={href}
+      href={withBase(href)}
       target="_blank"
       rel="noopener"
       class="block border border-ink p-lg bg-canvas text-ink hover:bg-canvas-soft"
