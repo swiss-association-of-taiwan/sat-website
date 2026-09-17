@@ -82,7 +82,7 @@ const committee = (await getCollection("committee")).sort((a, b) => a.data.order
             <p class="text-body-md text-body mt-12 pt-lg border-t border-ink max-w-[68ch]">
               Want to know more about how SAT is structured and governed? You can read our{" "}
               {articlesLink ? (
-                <a href={articlesLink} target="_blank" rel="noopener" class="link-inline">
+                <a href={withBase(articlesLink)} target="_blank" rel="noopener" class="link-inline">
                   Association Articles
                 </a>
               ) : (
