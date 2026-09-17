@@ -145,8 +145,9 @@ const pages = defineCollection({
 
     // Contact only
     directContacts: z.array(z.object({ label: z.string(), email: z.string() })).optional(),
+    // Merged into the disclaimer block per client instruction (phone line
+    // removed sitewide) — see contact.astro.
     locationLabel: z.string().optional(),
-    phone: z.string().optional(),
     note: linkableText.optional(),
   }),
 });

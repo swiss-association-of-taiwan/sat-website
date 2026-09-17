@@ -27,7 +27,7 @@ Curious what our events are like? Have a look at our [Impressions](/impressions/
 
 {{luma}}
 
-Trouble with the calendar? Write to [contact@swissassociation.tw](mailto:contact@swissassociation.tw) and we will send you the details.
+Trouble with the calendar? Use the [Contact Form](/contact/) and we will send you the details.
 
 ## Before you register
 
