@@ -1,11 +1,16 @@
 # swissassociation.tw
 
-The Swiss Association of Taiwan's website. Astro (static output) + Tailwind, deployed
-on Cloudflare Pages. No CMS, no database, no server.
+The Swiss Association of Taiwan's website. Astro (static output) + Tailwind. No CMS,
+no database, no server.
 
-Build source of truth is [`handoff/`](handoff/) — start with
-[`handoff/BUILD.md`](handoff/BUILD.md), then
-[`handoff/SAT-DESIGN.md`](handoff/SAT-DESIGN.md) for every visual decision. See
+Deployed to GitHub Pages at `swiss-association-of-taiwan.github.io/sat-website` via
+`.github/workflows/deploy.yml` on every push to `main`. Cloudflare Pages at the real
+`swissassociation.tw` domain is the eventual target but isn't wired up yet — when it
+is, `site`/`base` in `astro.config.mjs` are the two lines to change.
+
+Build source of truth was [`handoff/`](handoff/) during initial construction — a local
+folder of the client's design mockups and copy, not committed to this repo (everything
+needed from it has been migrated into `src/` and `public/`). See
 [`AGENTS.md`](AGENTS.md) for the full map.
 
 ## Commands

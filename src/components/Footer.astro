@@ -1,6 +1,7 @@
 ---
 import { navLinks } from "../lib/nav";
 import { socialLinks as socialHrefs } from "../data/social";
+import { withBase } from "../lib/url";
 
 // Official platform marks, reversed to solid white, no containers — see
 // handoff/SAT-DESIGN-ADDENDUM.md "Social platform marks (footer)". Paths are
@@ -45,14 +46,14 @@ const socialMarks = [
   <div class="max-w-content mx-auto px-5 lg:px-16 pt-16 md:pt-24 pb-10">
     <div class="grid grid-cols-1 min-[641px]:grid-cols-2 min-[1025px]:grid-cols-3 gap-x-lg gap-y-2xl">
       <div>
-        <img src="/images/logo-v4-white.png" alt="Swiss Association of Taiwan" class="w-full max-w-[240px] h-auto" />
+        <img src={withBase("/images/logo-v4-white.png")} alt="Swiss Association of Taiwan" class="w-full max-w-[240px] h-auto" />
         <div class="text-body-sm text-on-dark mt-lg">Taipei, Taiwan</div>
       </div>
 
       <div class="flex flex-col gap-sm">
         {
           navLinks.map((link) => (
-            <a href={link.href} class="text-body-sm text-on-dark hover:underline">
+            <a href={withBase(link.href)} class="text-body-sm text-on-dark hover:underline">
               {link.label}
             </a>
           ))
@@ -87,8 +88,8 @@ const socialMarks = [
     <div class="flex flex-wrap justify-between gap-sm mt-16 pt-lg border-t border-on-dark">
       <div class="text-caption text-on-dark">Swiss Association of Taiwan. A non-registered association, founded 1990.</div>
       <div class="flex gap-lg">
-        <a href="/contact/" class="text-caption text-on-dark hover:underline">Privacy</a>
-        <a href="/contact/" class="text-caption text-on-dark hover:underline">Imprint</a>
+        <a href={withBase("/contact/")} class="text-caption text-on-dark hover:underline">Privacy</a>
+        <a href={withBase("/contact/")} class="text-caption text-on-dark hover:underline">Imprint</a>
       </div>
     </div>
   </div>
