@@ -1,9 +1,50 @@
-// Real URLs, supplied by the client 2026-09-16. A blank value means that
-// mark doesn't render at all — see components/Footer.astro.
-export const socialLinks = {
-  facebook: "https://www.facebook.com/groups/101964675724/",
-  line: "https://line.me/ti/g2/5NDi6ys4qYmt-fVFH8d5nUIkVrFRnLB4q9ilhQ",
-  linkedin: "https://www.linkedin.com/company/swissassociationoftaiwan/",
-  instagram: "https://www.instagram.com/swissassociationtaiwan/",
-  threads: "https://www.threads.com/@swissassociationtaiwan",
-} satisfies Record<string, string>;
+// Official platform marks, reversed to solid white, no containers — see
+// handoff/SAT-DESIGN-ADDENDUM.md "Social platform marks (footer)". Paths are
+// the exact glyphs from the approved mockup (handoff/pages/index.html);
+// reused verbatim rather than re-traced. Both Facebook entries share the
+// same official "f" mark — the text label is what distinguishes the Page
+// from the Group. Real URLs supplied by the client.
+export interface SocialLink {
+  label: string;
+  href: string;
+  markup: string;
+}
+
+export const socialLinks: SocialLink[] = [
+  {
+    label: "Facebook Page",
+    href: "https://www.facebook.com/SwissAssociationofTaiwan",
+    markup:
+      '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.6 22v-8.2h2.8l.42-3.2h-3.22V8.55c0-.93.26-1.56 1.6-1.56h1.72V4.13C16.62 4.05 15.72 4 14.7 4c-2.5 0-4.2 1.53-4.2 4.33v2.27H7.7v3.2h2.8V22z" fill="#FFFFFF"></path></svg>',
+  },
+  {
+    label: "Facebook Group",
+    href: "https://www.facebook.com/groups/101964675724/",
+    markup:
+      '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M13.6 22v-8.2h2.8l.42-3.2h-3.22V8.55c0-.93.26-1.56 1.6-1.56h1.72V4.13C16.62 4.05 15.72 4 14.7 4c-2.5 0-4.2 1.53-4.2 4.33v2.27H7.7v3.2h2.8V22z" fill="#FFFFFF"></path></svg>',
+  },
+  {
+    label: "LINE",
+    href: "https://line.me/ti/g2/5NDi6ys4qYmt-fVFH8d5nUIkVrFRnLB4q9ilhQ",
+    markup:
+      '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.48 3 2 6.63 2 11.1c0 4 3.55 7.35 8.35 7.98.32.07.77.21.88.49.1.25.07.63.03.88l-.19 1.14c-.06.34-.27 1.32 1.16.72 1.43-.6 7.7-4.53 9.13-7.77.99-1.79 1.64-3.09 1.64-3.44C23 6.63 18.52 3 12 3z" fill="#FFFFFF"></path></svg>',
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/swissassociationoftaiwan/",
+    markup:
+      '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="9" width="4" height="12" fill="#FFFFFF"></rect><circle cx="4" cy="4.5" r="2.3" fill="#FFFFFF"></circle><path d="M9 9h3.8v1.7c.8-1.3 2.2-2 3.9-2 2.9 0 4.3 1.9 4.3 5.2V21h-4v-6.4c0-1.6-.6-2.6-2-2.6s-2.2 1-2.2 2.6V21H9z" fill="#FFFFFF"></path></svg>',
+  },
+  {
+    label: "Instagram",
+    href: "https://www.instagram.com/swissassociationtaiwan/",
+    markup:
+      '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="#FFFFFF" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.4" cy="6.6" r="1.1" fill="#FFFFFF" stroke="none"></circle></svg>',
+  },
+  {
+    label: "Threads",
+    href: "https://www.threads.com/@swissassociationtaiwan",
+    markup:
+      '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12.186 24h-.007c-3.581-.024-6.334-1.205-8.184-3.509C2.35 18.44 1.5 15.586 1.472 12.01v-.017c.03-3.579.879-6.43 2.525-8.482C5.845 1.205 8.6.024 12.18 0h.014c2.746.02 5.043.725 6.826 2.098 1.677 1.29 2.858 3.13 3.509 5.467l-2.04.569c-1.104-3.96-3.898-5.984-8.304-6.015-2.91.022-5.11.936-6.54 2.717C4.307 6.504 3.616 8.914 3.589 12c.027 3.086.718 5.496 2.057 7.164 1.43 1.783 3.631 2.698 6.54 2.717 2.623-.02 4.358-.631 5.8-2.045 1.647-1.613 1.618-3.593 1.09-4.798-.31-.71-.873-1.3-1.634-1.75-.192 1.352-.622 2.446-1.284 3.272-.886 1.102-2.14 1.704-3.73 1.79-1.202.065-2.361-.218-3.259-.801-1.063-.689-1.685-1.74-1.752-2.964-.065-1.19.408-2.285 1.33-3.082.88-.76 2.119-1.207 3.583-1.291a13.9 13.9 0 0 1 3.02.142c-.126-.742-.375-1.332-.75-1.757-.513-.586-1.308-.883-2.359-.89h-.029c-.844 0-1.992.232-2.721 1.32L7.734 7.847c.98-1.454 2.568-2.256 4.478-2.256h.044c3.194.02 5.097 1.975 5.287 5.388.108.046.216.094.321.142 1.49.7 2.58 1.761 3.154 3.07.797 1.82.871 4.79-1.548 7.158-1.85 1.81-4.094 2.628-7.277 2.65Zm1.003-11.69c-.242 0-.487.007-.739.021-1.836.103-2.98.946-2.916 2.143.067 1.256 1.452 1.839 2.784 1.767 1.224-.065 2.818-.543 3.086-3.71a10.5 10.5 0 0 0-2.215-.221Z" fill="#FFFFFF"></path></svg>',
+  },
+];

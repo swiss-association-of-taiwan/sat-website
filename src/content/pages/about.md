@@ -40,12 +40,12 @@ figures:
 
 documents:
   - key: "bulletin-00"
-    href: "https://drive.google.com/file/d/1sPBS2rkTVuEO9MmRAr5rpOibPIs1Z5WH/view?usp=sharing"
+    href: "/docs/bulletin-00-1990.pdf"
     label: "Archive · 1990"
     title: "Bulletin 00"
     description: "Scanned PDF, 8 pages. Opens in a new tab."
   - key: "tell-1"
-    href: "https://drive.google.com/file/d/1Wi45xD9QUBnOFwijwjuLOQktJ7WAWKHi/view?usp=sharing"
+    href: "/docs/tell-no-1-1991.pdf"
     label: "Archive · November 1991"
     title: "TELL No. 1"
     description: "Scanned PDF, 48 pages. Opens in a new tab."
