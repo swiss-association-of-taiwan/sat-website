@@ -18,7 +18,7 @@ locationLabel: "Taipei, Taiwan"
 note:
   bodyBefore: "SAT is a community association, not an official body. For consular assistance to Swiss nationals in Taiwan, please contact the "
   linkText: "Trade Office of Swiss Industries"
-  linkHref: "https://www.facebook.com/TOSITaipei/"
+  linkHref: "https://www.schweiz-taiwan.eda.admin.ch/en"
   bodyAfter: "."
 
 closing:

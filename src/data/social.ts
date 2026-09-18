@@ -27,7 +27,7 @@ export const socialLinks: SocialLink[] = [
     label: "LINE",
     href: "https://line.me/ti/g2/5NDi6ys4qYmt-fVFH8d5nUIkVrFRnLB4q9ilhQ",
     markup:
-      '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3C6.48 3 2 6.63 2 11.1c0 4 3.55 7.35 8.35 7.98.32.07.77.21.88.49.1.25.07.63.03.88l-.19 1.14c-.06.34-.27 1.32 1.16.72 1.43-.6 7.7-4.53 9.13-7.77.99-1.79 1.64-3.09 1.64-3.44C23 6.63 18.52 3 12 3z" fill="#FFFFFF"></path></svg>',
+      '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6c5.4 0 9.6 3.5 9.6 7.8 0 4.3-4.2 7.8-9.6 7.8-.62 0-1.22-.05-1.8-.13l-4.3 2.86a.6.6 0 0 1-.93-.6l.62-3.1C3.42 15.8 2.4 13.3 2.4 10.4c0-4.3 4.2-7.8 9.6-7.8z" fill="#FFFFFF"></path></svg>',
   },
   {
     label: "LinkedIn",
