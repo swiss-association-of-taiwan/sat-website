@@ -1,13 +1,38 @@
 ---
-import { buildMosaic, tileSpanClass } from "../lib/photoMosaic";
+import { buildMosaic, tileSpanClass, getOccasionFilters } from "../lib/photoMosaic";
 import { withBase } from "../lib/url";
 
 const tiles = buildMosaic();
+const filters = getOccasionFilters();
 ---
+
+<div
+  class="flex flex-wrap items-center gap-xs border-t border-ink pt-5 mb-[28px]"
+  data-filter-bar
+>
+  {
+    filters.map((filter) => (
+      <button
+        type="button"
+        class:list={[
+          "filt",
+          "bg-canvas border border-rule text-ink text-caption px-md py-[11px] min-h-11 cursor-pointer whitespace-nowrap hover:border-ink",
+          filter.key === "all" && "on !bg-ink !border-ink !text-on-dark",
+        ]}
+        data-filter={filter.key}
+        aria-pressed={filter.key === "all" ? "true" : "false"}
+      >
+        {filter.label}
+      </button>
+    ))
+  }
+  <div data-photo-count class="ml-auto text-caption text-body">{tiles.length} photographs</div>
+</div>
 
 <div
   class="grid grid-cols-2 min-[560px]:grid-cols-4 md:grid-cols-6 gap-[6px] min-[560px]:gap-2 auto-rows-[clamp(88px,9.2vw,152px)]"
   style="grid-auto-flow: dense;"
+  data-mosaic
 >
   {
     tiles.map((tile, index) => (
@@ -15,6 +40,7 @@ const tiles = buildMosaic();
         type="button"
         class:list={["relative block p-0 border-0 bg-canvas-soft overflow-hidden cursor-zoom-in group", tileSpanClass(tile.bandPosition)]}
         aria-label={`${tile.occasionLabel} — SAT`}
+        data-occasion={tile.occasion}
         data-lightbox-trigger="impressions"
         data-lightbox-index={index}
       >
@@ -32,4 +58,59 @@ const tiles = buildMosaic();
 <script define:vars={{ images: tiles.map((t) => ({ src: withBase(`/impressions/${t.filename}`), alt: `${t.occasionLabel} — SAT` })) }}>
   window.__lightboxGroups = window.__lightboxGroups || {};
   window.__lightboxGroups.impressions = images;
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const bar = document.querySelector("[data-filter-bar]");
+    const mosaic = document.querySelector("[data-mosaic]");
+    const countEl = document.querySelector("[data-photo-count]");
+    if (!bar || !mosaic || !countEl) return;
+
+    const buttons = Array.from(bar.querySelectorAll(".filt"));
+    const tiles = Array.from(mosaic.querySelectorAll("[data-occasion]"));
+
+    const closeLightbox = () => {
+      const lb = document.getElementById("lightbox-impressions");
+      if (lb && !lb.classList.contains("hidden")) {
+        lb.classList.add("hidden");
+        lb.classList.remove("flex");
+        document.body.style.overflow = "";
+      }
+    };
+
+    const applyFilter = (key) => {
+      const visible = tiles.filter((tile) => key === "all" || tile.dataset.occasion === key);
+      const visibleSet = new Set(visible);
+
+      tiles.forEach((tile) => {
+        tile.classList.toggle("hidden", !visibleSet.has(tile));
+      });
+
+      visible.forEach((tile, i) => {
+        tile.dataset.lightboxIndex = String(i);
+      });
+
+      window.__lightboxGroups.impressions = visible.map((tile) => {
+        const img = tile.querySelector("img");
+        return { src: img.getAttribute("src"), alt: img.getAttribute("alt") };
+      });
+
+      countEl.textContent = `${visible.length} photograph${visible.length === 1 ? "" : "s"}`;
+
+      buttons.forEach((btn) => {
+        const isActive = btn.dataset.filter === key;
+        btn.classList.toggle("on", isActive);
+        btn.classList.toggle("!bg-ink", isActive);
+        btn.classList.toggle("!border-ink", isActive);
+        btn.classList.toggle("!text-on-dark", isActive);
+        btn.setAttribute("aria-pressed", String(isActive));
+      });
+    };
+
+    buttons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        closeLightbox();
+        applyFilter(btn.dataset.filter);
+      });
+    });
+  });
 </script>

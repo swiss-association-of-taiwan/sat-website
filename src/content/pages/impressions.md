@@ -1,4 +1,4 @@
 ---
 title: "Impressions"
-subtitle: "Get a feel for the SAT community through moments from our apéro evenings, National Day and Christmas Dinner, and come join us at one of our next gatherings."
+subtitle: "Get a feel for the SAT community through moments from our apéro evenings, National Day and Christmas Dinner — alongside pictures from the association's early magazines — and come join us at one of our next gatherings."
 ---

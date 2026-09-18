@@ -4,9 +4,9 @@ subtitle: "A Little Piece of Switzerland in Taiwan"
 intro: "The Swiss Association of Taiwan, better known as SAT or simply the Swiss Club, has been bringing people together in Taiwan since November 14, 1990."
 
 heroImage:
-  src: "/images/members.jpg"
-  alt: "SAT members at the National Day apéro"
-  caption: "Members at the National Day apéro in Taipei."
+  src: "/images/about-banner.jpg"
+  alt: "Members gathered at long tables for the National Day celebration"
+  objectPosition: "50% 55%"
 
 toc:
   - href: "#how-it-started"

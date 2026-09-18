@@ -12,6 +12,21 @@ eaves), never a dragon boat. Don't write "dragon boat(s)", "boat", "hull", or
 "boat row" anywhere the logo is described — alt text, figcaptions, component
 props, asset filenames, design docs. Use "dragon roof" / "roofline" / "eaves".
 
+**Three logo forms, chosen by size, not one mark for everything** (SAT-DESIGN.md
+› Logo › Construction):
+- **Full lockup** (wordmark + cross + roof + descriptor) at 180px and up — header
+  at full scale, footer, covers, the About page.
+- **Association mark** (cross + roof, no wording) 48–180px — header once it
+  compacts on scroll, document headers, social avatars.
+- **Reduction mark** (SAT + cross square, no roof) below 48px and any
+  single-colour reproduction — favicon, embroidery, stamps. Never a social
+  avatar or standalone identity on its own.
+
+**Outstanding:** the association-mark asset doesn't exist yet. `Header.astro`
+still shrinks the full lockup (150px→88px) on scroll instead of swapping to the
+association mark at that size — request the asset from SAT before "fixing"
+this; don't crop the lockup yourself to fake it.
+
 Design tokens live in `src/styles/global.css` as a Tailwind v4 `@theme` block,
 generated from SAT-DESIGN.md's YAML front matter. Component code uses the token
 utility classes from there (`text-display-xl`, `bg-canvas-soft`, `p-lg`, …) —

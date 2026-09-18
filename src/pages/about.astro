@@ -25,7 +25,13 @@ const committee = (await getCollection("committee")).sort((a, b) => a.data.order
   {
     heroImage && (
       <div class="max-w-content mx-auto px-5 lg:px-16 pb-12 md:pb-22">
-        <ImageFigure src={withBase(heroImage.src)} alt={heroImage.alt} caption={heroImage.caption} ratio="21:9" />
+        <ImageFigure
+          src={withBase(heroImage.src)}
+          alt={heroImage.alt}
+          caption={heroImage.caption}
+          ratio="21:9"
+          objectPosition={heroImage.objectPosition}
+        />
       </div>
     )
   }
