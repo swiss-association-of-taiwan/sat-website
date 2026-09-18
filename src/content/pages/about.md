@@ -40,8 +40,8 @@ figures:
 
 originalLogo:
   src: "/images/sat-original-logo.png"
-  alt: "SAT's original emblem: the Swiss cross above two Taiwanese dragon boats"
-  caption: "SAT's original emblem, in use from the founding years: the Swiss cross above two dragon boats."
+  alt: "SAT's original emblem: the Swiss cross above a Taiwanese dragon roof"
+  caption: "SAT's original emblem, in use from the founding years: the Swiss cross above a Taiwanese dragon roof."
 
 documents:
   - key: "bulletin-00"
