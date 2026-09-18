@@ -7,6 +7,11 @@ It only exists in the original working directory, not in a fresh clone. If you h
 it locally: `handoff/BUILD.md` was the build order, `handoff/SAT-DESIGN.md` the
 design system, `handoff/SAT-DESIGN-ADDENDUM.md` the gap-filling decisions.
 
+**Logo terminology:** the device below the wordmark is a dragon roof (temple
+eaves), never a dragon boat. Don't write "dragon boat(s)", "boat", "hull", or
+"boat row" anywhere the logo is described — alt text, figcaptions, component
+props, asset filenames, design docs. Use "dragon roof" / "roofline" / "eaves".
+
 Design tokens live in `src/styles/global.css` as a Tailwind v4 `@theme` block,
 generated from SAT-DESIGN.md's YAML front matter. Component code uses the token
 utility classes from there (`text-display-xl`, `bg-canvas-soft`, `p-lg`, …) —
