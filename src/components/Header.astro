@@ -16,7 +16,13 @@ const { current } = Astro.props;
         id="brand-logo"
         src={withBase("/images/logo-v4.png")}
         alt="Swiss Association of Taiwan"
-        class="h-[150px] max-[700px]:h-[74px] w-auto transition-[height] duration-200 ease-out"
+        class="h-[150px] max-[700px]:h-[74px] w-auto"
+      />
+      <img
+        id="brand-mark"
+        src={withBase("/images/sat-association-mark.svg")}
+        alt="Swiss Association of Taiwan"
+        class="hidden h-[52px] w-auto"
       />
     </a>
 
@@ -87,6 +93,7 @@ const { current } = Astro.props;
 <script>
   const header = document.getElementById("site-header") as HTMLElement;
   const logo = document.getElementById("brand-logo") as HTMLImageElement;
+  const mark = document.getElementById("brand-mark") as HTMLImageElement;
   const burger = document.getElementById("nav-burger") as HTMLButtonElement;
   const panel = document.getElementById("mobile-nav-panel") as HTMLElement;
 
@@ -96,14 +103,13 @@ const { current } = Astro.props;
   setHeaderHeight();
   window.addEventListener("resize", setHeaderHeight);
 
-  // TODO: at 88px this should swap to the association mark (cross + roof, no
-  // wording) per SAT-DESIGN.md's three-form logo table, not just shrink the
-  // full lockup. That asset doesn't exist yet — request it from SAT rather
-  // than cropping the lockup. See AGENTS.md "Three logo forms".
+  // Past the scroll threshold the full lockup swaps for the association mark
+  // (cross + roof, no wording) — SAT-DESIGN.md's three-form logo table — rather
+  // than shrinking the lockup. See AGENTS.md "Three logo forms".
   const onScroll = () => {
     const compact = window.scrollY > 180;
-    logo.classList.toggle("h-[88px]", compact);
-    logo.classList.toggle("h-[150px]", !compact);
+    logo.classList.toggle("hidden", compact);
+    mark.classList.toggle("hidden", !compact);
     setHeaderHeight();
   };
   onScroll();
