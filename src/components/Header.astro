@@ -96,6 +96,10 @@ const { current } = Astro.props;
   setHeaderHeight();
   window.addEventListener("resize", setHeaderHeight);
 
+  // TODO: at 88px this should swap to the association mark (cross + roof, no
+  // wording) per SAT-DESIGN.md's three-form logo table, not just shrink the
+  // full lockup. That asset doesn't exist yet — request it from SAT rather
+  // than cropping the lockup. See AGENTS.md "Three logo forms".
   const onScroll = () => {
     const compact = window.scrollY > 180;
     logo.classList.toggle("h-[88px]", compact);

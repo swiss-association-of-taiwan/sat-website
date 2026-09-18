@@ -9,6 +9,7 @@ interface Props {
   lightboxGroup?: string;
   lightboxIndex?: number;
   enlargeLabel?: string;
+  objectPosition?: string;
 }
 
 const {
@@ -21,10 +22,12 @@ const {
   lightboxGroup,
   lightboxIndex,
   enlargeLabel,
+  objectPosition,
 } = Astro.props;
 
 const ratioClass = { "21:9": "aspect-[21/9]", "3:2": "aspect-[3/2]", "1:1": "aspect-square" }[ratio];
 const imgClass = ["w-full h-full object-cover", ratioClass, grayscale && "grayscale"];
+const imgStyle = objectPosition ? `object-position: ${objectPosition}` : undefined;
 ---
 
 <figure class:list={["m-0", className]}>
@@ -37,10 +40,10 @@ const imgClass = ["w-full h-full object-cover", ratioClass, grayscale && "graysc
         data-lightbox-trigger={lightboxGroup}
         data-lightbox-index={lightboxIndex}
       >
-        <img src={src} alt={alt} class:list={imgClass} />
+        <img src={src} alt={alt} class:list={imgClass} style={imgStyle} />
       </button>
     ) : (
-      <img src={src} alt={alt} class:list={imgClass} />
+      <img src={src} alt={alt} class:list={imgClass} style={imgStyle} />
     )
   }
   {caption && <figcaption class="text-caption text-body border-t border-rule mt-sm pt-sm">{caption}</figcaption>}

@@ -24,6 +24,11 @@ Put the files in `public/impressions/`. That is all — they appear on the wall 
 themselves. Photos do not need to be large; around 1100px on the longest edge is
 plenty, and smaller files make the page load faster for everyone.
 
+To put a photo under one of the filter buttons on that page, add a line for it in
+`src/content/impressions.json` with the occasion key (`august`, `apero`, `christmas`,
+`santa`, `archive`). A photo with no line still appears; it just sits in the last group.
+`archive` is for the old black-and-white pictures scanned from the early magazines.
+
 ## Add or change an event
 
 Nothing to do here. Create the event in Luma and it appears on the Events page. The

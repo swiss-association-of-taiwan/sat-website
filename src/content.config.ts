@@ -89,7 +89,8 @@ const pages = defineCollection({
       .object({
         src: z.string(),
         alt: z.string(),
-        caption: z.string(),
+        caption: z.string().optional(),
+        objectPosition: z.string().optional(),
       })
       .optional(),
     toc: z.array(z.object({ href: z.string(), label: z.string() })).optional(),
