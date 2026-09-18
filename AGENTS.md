@@ -22,10 +22,12 @@ props, asset filenames, design docs. Use "dragon roof" / "roofline" / "eaves".
   single-colour reproduction — favicon, embroidery, stamps. Never a social
   avatar or standalone identity on its own.
 
-**Outstanding:** the association-mark asset doesn't exist yet. `Header.astro`
-still shrinks the full lockup (150px→88px) on scroll instead of swapping to the
-association mark at that size — request the asset from SAT before "fixing"
-this; don't crop the lockup yourself to fake it.
+`Header.astro` swaps the full lockup for `public/images/sat-association-mark.svg`
+once the page scrolls (the `-white` reversal is there for dark grounds; not used yet).
+
+**Outstanding:** the reduction mark isn't drawn. The website doesn't need it — the
+favicon is the Swiss cross alone, a named exception in SAT-DESIGN.md — it's only for
+physical reproduction (embroidery, stamps, engraving).
 
 Design tokens live in `src/styles/global.css` as a Tailwind v4 `@theme` block,
 generated from SAT-DESIGN.md's YAML front matter. Component code uses the token
