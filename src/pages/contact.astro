@@ -25,12 +25,13 @@ const { title, subtitle, formalooSlug, directContacts, locationLabel, note, clos
                 data-form-slug={formalooSlug}
                 data-transparent-background="false"
                 data-hide-title="false"
-                data-hide-cover-and-logo="false"
+                data-hide-cover-and-logo="true"
                 data-fill-container-width="true"
-                data-auto-height="false"
-                style="width:100%;height:715px"
+                data-auto-height="true"
+                data-skip-welcome-page="false"
+                style="width:100%;height:auto"
               />
-              <script src="https://embed.formaloo.me/v1/main.js" defer></script>
+              <script is:inline src="https://embed.formaloo.me/v1/main.js" defer></script>
             </Fragment>
           ) : (
             <div class="mt-lg border border-dashed border-mute bg-canvas-soft min-h-[400px] flex items-center justify-center p-xl">

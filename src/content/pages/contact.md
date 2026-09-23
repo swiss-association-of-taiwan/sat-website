@@ -2,10 +2,7 @@
 title: "Contact"
 subtitle: "Have a question about SAT, our events or membership? Send us a message and we'll be happy to hear from you."
 
-# Formaloo slug not supplied yet — leave empty and the form area shows a
-# placeholder instead. Fill in the slug (see membership.md for the pattern)
-# and the embed goes live with no other change.
-formalooSlug: ""
+formalooSlug: "xei3Zq3G"
 
 directContacts:
   - label: "President"
