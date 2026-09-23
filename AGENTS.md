@@ -37,12 +37,20 @@ disabled on purpose so nothing outside the design system is reachable.
 
 ## Deployment and the `base` path
 
-Deployed to GitHub Pages as a project page — `astro.config.mjs` hardcodes
-`base: '/sat-website'`, so local dev also serves under that path. Every internal
-href/src in the codebase must go through `withBase()` from `src/lib/url.ts` (it's a
-no-op on external URLs, mailto:, tel: and hash anchors, so it's safe to wrap
-indiscriminately). Do not write a bare `href="/about/"` or `src="/images/…"`
-anywhere — it will 404.
+Deployed via Cloudflare Workers (`wrangler.jsonc`, static assets from `./dist`)
+from `main`, live at the root domain `https://swissassociation.tw`.
+`astro.config.mjs` sets `site: 'https://swissassociation.tw'` and `base: '/'`, so
+all paths are root-relative — `/about/`, `/images/…` — with no prefix. The
+earlier GitHub Pages project-page deployment (`/sat-website`) is retired; its
+workflow is disabled (`.github/workflows/deploy.yml.disabled`).
+
+Every internal href/src in the codebase still goes through `withBase()` from
+`src/lib/url.ts`. With `base: '/'` it's a no-op today, but it stays in place so
+a future base-path change (another subpath deploy, a preview environment) is a
+one-line config edit rather than a codebase-wide find-and-replace. It's already
+a no-op on external URLs, mailto:, tel: and hash anchors, so it's safe to wrap
+indiscriminately — keep using it on new hrefs/srcs rather than writing bare
+paths.
 
 ## Development
 
