@@ -6,6 +6,11 @@ import "@fontsource/inter/800.css";
 import "@fontsource/noto-sans-tc/400.css";
 import "@fontsource/noto-sans-tc/700.css";
 import "../styles/global.css";
+// ?url gives the same hashed /_astro/ URL the fontsource CSS above resolves to,
+// so the preloads below hit the browser's cache instead of fetching twice.
+import inter400 from "@fontsource/inter/files/inter-latin-400-normal.woff2?url";
+import inter700 from "@fontsource/inter/files/inter-latin-700-normal.woff2?url";
+import inter800 from "@fontsource/inter/files/inter-latin-800-normal.woff2?url";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
 import type { NavKey } from "../lib/nav";
@@ -25,6 +30,25 @@ const { title, current } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <meta name="generator" content={Astro.generator} />
     <link rel="icon" href={withBase("/favicon.svg")} type="image/svg+xml" />
+    <link rel="preload" href={inter400} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={inter700} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={inter800} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={withBase("/images/logo-v4.png")} as="image" />
+    <link rel="preload" href={withBase("/images/sat-association-mark.svg")} as="image" />
+    <!-- Sets the header's compact state before first paint. scrollY is usually
+         still 0 here on a reload (the browser restores scroll later), so for
+         reload/back-forward it falls back to the state Header.astro saved. -->
+    <script is:inline>
+      (function () {
+        try {
+          var c = window.scrollY > 180;
+          var nav = performance.getEntriesByType("navigation")[0];
+          var t = nav && nav.type;
+          if (!c && (t === "reload" || t === "back_forward") && sessionStorage.getItem("sat-header-compact:" + location.pathname) === "1") c = true;
+          if (c) document.documentElement.classList.add("header-compact");
+        } catch (e) {}
+      })();
+    </script>
     <title>{title} · Swiss Association of Taiwan</title>
   </head>
   <body class="overflow-x-hidden">

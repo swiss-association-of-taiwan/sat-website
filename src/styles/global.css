@@ -1,6 +1,31 @@
 @import "tailwindcss";
 
 /*
+ * Metric-matched fallback for Inter: local Arial scaled to Inter's dimensions
+ * (values from Inter's own metrics vs Arial), so the swap from fallback to
+ * Inter on load reflows almost nothing. Two faces because Arial regular and
+ * bold are separate local fonts; 300/400 map to regular, 700/800 to bold.
+ */
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial");
+  font-weight: 300 400;
+  size-adjust: 107.4%;
+  ascent-override: 90.2%;
+  descent-override: 22.5%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: "Inter Fallback";
+  src: local("Arial Bold");
+  font-weight: 700 800;
+  size-adjust: 107.4%;
+  ascent-override: 90.2%;
+  descent-override: 22.5%;
+  line-gap-override: 0%;
+}
+
+/*
  * Design tokens generated from handoff/SAT-DESIGN.md (front matter v1.1).
  * Component code must use these tokens/utility classes — no raw hex or px values
  * outside this file. See handoff/BUILD.md step 1.
@@ -21,7 +46,7 @@
   --color-on-dark: #ffffff;
 
   /* Type family */
-  --font-sans: "Inter", "Noto Sans TC", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Inter", "Inter Fallback", "Noto Sans TC", "Helvetica Neue", Arial, sans-serif;
 
   /* Font-size scale removed — the 12 named typography roles below
      (.text-display-xl … .text-date-block) are the only sanctioned sizes. */
