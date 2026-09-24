@@ -1,10 +1,8 @@
 ---
-import "@fontsource/inter/300.css";
-import "@fontsource/inter/400.css";
-import "@fontsource/inter/700.css";
-import "@fontsource/inter/800.css";
-import "@fontsource/noto-sans-tc/400.css";
-import "@fontsource/noto-sans-tc/700.css";
+import "@fontsource/inter/latin-300.css";
+import "@fontsource/inter/latin-400.css";
+import "@fontsource/inter/latin-700.css";
+import "@fontsource/inter/latin-800.css";
 import "../styles/global.css";
 // ?url gives the same hashed /_astro/ URL the fontsource CSS above resolves to,
 // so the preloads below hit the browser's cache instead of fetching twice.
@@ -33,20 +31,20 @@ const { title, current } = Astro.props;
     <link rel="preload" href={inter400} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={inter700} as="font" type="font/woff2" crossorigin />
     <link rel="preload" href={inter800} as="font" type="font/woff2" crossorigin />
-    <link rel="preload" href={withBase("/images/logo-v4.png")} as="image" fetchpriority="high" />
-    <link rel="preload" href={withBase("/images/sat-association-mark.svg")} as="image" />
+    <link rel="preload" href={withBase("/images/sat-lockup.svg")} as="image" fetchpriority="high" />
     <slot name="head" />
-    <!-- Sets the header's compact state before first paint. scrollY is usually
-         still 0 here on a reload (the browser restores scroll later), so for
-         reload/back-forward it falls back to the state Header.astro saved. -->
+    <!-- Sets the header's compact state before first paint. It must not read
+         layout (scrollY counts — it forces a reflow), so it only uses the state
+         Header.astro saved for a reload/back-forward; a fresh visit starts at the
+         top, expanded. Header.astro reconciles with the real scroll after load. -->
     <script is:inline>
       (function () {
         try {
-          var c = window.scrollY > 180;
           var nav = performance.getEntriesByType("navigation")[0];
           var t = nav && nav.type;
-          if (!c && (t === "reload" || t === "back_forward") && sessionStorage.getItem("sat-header-compact:" + location.pathname) === "1") c = true;
-          if (c) document.documentElement.classList.add("header-compact");
+          if ((t === "reload" || t === "back_forward") && sessionStorage.getItem("sat-header-compact:" + location.pathname) === "1") {
+            document.documentElement.classList.add("header-compact");
+          }
         } catch (e) {}
       })();
     </script>
@@ -56,27 +54,30 @@ const { title, current } = Astro.props;
     <Header current={current} />
     <slot />
     <Footer />
-    <!-- EmailOctopus signup form (handoff/CHANGES-2026-09-23.md). Its script pulls
-         in reCAPTCHA and a Google Fonts stylesheet, which kept the browser
-         "waiting for www.google.com" during first paint. So it's injected once the
-         page has loaded and the browser is idle — still appended at the end of
-         <body>, where the static tag sat, and with the same data-form attribute
-         the script looks for. -->
+    <!-- EmailOctopus signup form (handoff/CHANGES-2026-09-23.md). It is a slide-in
+         popup ("Get SAT Event Notifications"), not a section of the page, and its
+         script drags in reCAPTCHA (~345 KiB of JS, three times over) and a Google
+         Fonts stylesheet — the heaviest thing on the page by far. So nothing loads
+         until the visitor first interacts (scroll, touch, click, key), with a 30 s
+         fallback for someone who just reads. One script, one form, one reCAPTCHA.
+         Appended to the end of <body>, where the static tag sat, with the
+         data-form attribute the script looks for. -->
     <script is:inline>
       (function () {
+        var loaded = false;
+        var events = ["pointerdown", "keydown", "touchstart", "scroll"];
         function add() {
+          if (loaded) return;
+          loaded = true;
+          for (var i = 0; i < events.length; i++) window.removeEventListener(events[i], add);
           var s = document.createElement("script");
           s.async = true;
           s.src = "https://eocampaign1.com/form/564a6662-2f1f-11f1-b9df-0b322fe22b99.js";
           s.setAttribute("data-form", "564a6662-2f1f-11f1-b9df-0b322fe22b99");
           document.body.appendChild(s);
         }
-        function schedule() {
-          if ("requestIdleCallback" in window) requestIdleCallback(add, { timeout: 3000 });
-          else setTimeout(add, 1500);
-        }
-        if (document.readyState === "complete") schedule();
-        else window.addEventListener("load", schedule);
+        for (var i = 0; i < events.length; i++) window.addEventListener(events[i], add, { passive: true });
+        setTimeout(add, 30000);
       })();
     </script>
   </body>

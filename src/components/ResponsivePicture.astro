@@ -1,0 +1,56 @@
+---
+// <picture> with AVIF + WebP srcsets built from the variants that
+// scripts/responsive-images.mjs wrote to public/images/r/, and the original
+// JPEG as the fallback <img>. Falls back to a plain <img> if the photo has no
+// variants (a photo dropped in without running the script still renders).
+import { withBase } from "../lib/url";
+import { variantSrcset } from "../lib/responsive";
+
+interface Props {
+  /** The original, e.g. "/images/ev1.jpg". */
+  src: string;
+  alt: string;
+  /** The `sizes` attribute: how wide the image is rendered at each breakpoint. */
+  sizes: string;
+  /** Intrinsic size of the original, for the aspect-ratio the browser reserves. */
+  width: number;
+  height: number;
+  class?: string;
+  loading?: "lazy" | "eager";
+  fetchpriority?: "high" | "low" | "auto";
+}
+
+const { src, alt, sizes, width, height, class: className, loading = "lazy", fetchpriority } = Astro.props;
+const avif = variantSrcset(src, "avif");
+const webp = variantSrcset(src, "webp");
+---
+
+{
+  webp ? (
+    <picture>
+      <source type="image/avif" srcset={avif} sizes={sizes} />
+      <source type="image/webp" srcset={webp} sizes={sizes} />
+      <img
+        src={withBase(src)}
+        alt={alt}
+        width={width}
+        height={height}
+        loading={loading}
+        fetchpriority={fetchpriority}
+        decoding="async"
+        class={className}
+      />
+    </picture>
+  ) : (
+    <img
+      src={withBase(src)}
+      alt={alt}
+      width={width}
+      height={height}
+      loading={loading}
+      fetchpriority={fetchpriority}
+      decoding="async"
+      class={className}
+    />
+  )
+}
