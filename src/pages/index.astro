@@ -2,36 +2,48 @@
 import { getEntry } from "astro:content";
 import Layout from "../layouts/Layout.astro";
 import Section from "../components/Section.astro";
+import ResponsivePicture from "../components/ResponsivePicture.astro";
 import { withBase } from "../lib/url";
+import { variantSrcset } from "../lib/responsive";
 
 const page = await getEntry("pages", "home");
 if (!page) throw new Error("Missing content/pages/home.md");
 const { hero, nextEvent, audience, eventsTeaser, membershipCta, contactCards } = page.data;
-// hero.webp sits beside the hero JPEG (same name, .webp).
-const heroWebp = hero ? hero.image.replace(/\.jpe?g$/i, ".webp") : "";
+const heroAvifSet = hero ? variantSrcset(hero.image, "avif") : "";
 ---
 
 <Layout title="Home" current="home">
-  {hero && <link slot="head" rel="preload" as="image" href={withBase(heroWebp)} type="image/webp" fetchpriority="high" />}
+  {
+    heroAvifSet && (
+      <link
+        slot="head"
+        rel="preload"
+        as="image"
+        type="image/avif"
+        imagesrcset={heroAvifSet}
+        imagesizes="100vw"
+        fetchpriority="high"
+      />
+    )
+  }
   {
     hero && (
       <section class="bg-canvas">
         {/* Fixed-ratio dark box: the hero area is never white and never shows alt
-            text before the photo arrives. WebP first, the JPEG for anything that
-            can't decode it. Above the fold, so no lazy loading. */}
+            text before the photo arrives. AVIF, then WebP, then the JPEG; full
+            viewport width, so sizes is 100vw. Above the fold: preloaded (above),
+            high priority, not lazy. */}
         <div class="w-full aspect-[16/9] sm:aspect-[21/9] bg-photo">
-          <picture>
-            <source srcset={withBase(heroWebp)} type="image/webp" />
-            <img
-              src={withBase(hero.image)}
-              alt={hero.imageAlt}
-              width="1920"
-              height="823"
-              fetchpriority="high"
-              decoding="async"
-              class="w-full h-full object-cover text-[transparent]"
-            />
-          </picture>
+          <ResponsivePicture
+            src={hero.image}
+            alt={hero.imageAlt}
+            sizes="100vw"
+            width={1920}
+            height={823}
+            loading="eager"
+            fetchpriority="high"
+            class="w-full h-full object-cover text-[transparent]"
+          />
         </div>
         <div class="max-w-content mx-auto px-5 lg:px-16 pt-10 md:pt-16 pb-16 md:pb-section">
           <h1 class="text-display-xl text-ink max-w-[16ch]">{hero.title}</h1>
@@ -60,7 +72,14 @@ const heroWebp = hero ? hero.image.replace(/\.jpe?g$/i, ".webp") : "";
             </div>
           </div>
           <div>
-            <img src={withBase(nextEvent.image)} alt={nextEvent.imageAlt} loading="lazy" decoding="async" class="w-full aspect-[3/2] object-cover bg-canvas-soft text-[transparent]" />
+            <ResponsivePicture
+              src={nextEvent.image}
+              alt={nextEvent.imageAlt}
+              sizes="(min-width: 768px) 45vw, 100vw"
+              width={1200}
+              height={800}
+              class="w-full aspect-[3/2] object-cover bg-canvas-soft text-[transparent]"
+            />
             <div class="text-caption text-body border-t border-rule mt-sm pt-sm">{nextEvent.caption}</div>
           </div>
         </div>
@@ -99,7 +118,14 @@ const heroWebp = hero ? hero.image.replace(/\.jpe?g$/i, ".webp") : "";
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-lg mt-10">
           {eventsTeaser.cards.map((card) => (
             <article class="border-t border-ink pt-md pb-lg">
-              <img src={withBase(card.image)} alt={card.imageAlt} loading="lazy" decoding="async" class="w-full aspect-[3/2] object-cover bg-canvas-soft text-[transparent]" />
+              <ResponsivePicture
+                src={card.image}
+                alt={card.imageAlt}
+                sizes="(min-width: 768px) 30vw, (min-width: 640px) 45vw, 100vw"
+                width={1200}
+                height={800}
+                class="w-full aspect-[3/2] object-cover bg-canvas-soft text-[transparent]"
+              />
               <div class="inline-block bg-red text-on-red text-date-block px-sm py-xs mt-lg">{card.frequency}</div>
               <h3 class="text-display-md text-ink mt-md">{card.title}</h3>
               <p class="text-body-md text-body mt-sm max-w-[68ch]">{card.body}</p>
@@ -115,7 +141,14 @@ const heroWebp = hero ? hero.image.replace(/\.jpe?g$/i, ".webp") : "";
       <section class="bg-canvas-soft">
         <div class="grid grid-cols-1 md:grid-cols-2 items-stretch">
           <div class="min-h-[300px] md:min-h-[560px]">
-            <img src={withBase(membershipCta.image)} alt={membershipCta.imageAlt} loading="lazy" decoding="async" class="w-full h-full min-h-[300px] md:min-h-[560px] object-cover bg-canvas-soft text-[transparent]" />
+            <ResponsivePicture
+              src={membershipCta.image}
+              alt={membershipCta.imageAlt}
+              sizes="(min-width: 768px) 50vw, 100vw"
+              width={1176}
+              height={784}
+              class="w-full h-full min-h-[300px] md:min-h-[560px] object-cover bg-canvas-soft text-[transparent]"
+            />
           </div>
           <div class="flex flex-col justify-center px-5 lg:px-16 py-16 md:py-section">
             <h2 class="text-display-lg text-ink max-w-[18ch]">{membershipCta.title}</h2>
