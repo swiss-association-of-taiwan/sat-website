@@ -24,6 +24,11 @@ props, asset filenames, design docs. Use "dragon roof" / "roofline" / "eaves".
 
 `Header.astro` swaps the full lockup for `public/images/sat-association-mark.svg`
 once the page scrolls (the `-white` reversal is there for dark grounds; not used yet).
+The header is `position: fixed` inside a fixed-height `#header-slot`, so shrinking it
+never changes page height — a sticky header that shrinks re-triggers scroll anchoring
+and loops at the threshold. Compact state is `html.header-compact`: on at scrollY > 180,
+off below 80, set before first paint by the inline script in `Layout.astro`. Don't
+make the header's in-flow height depend on scroll state again.
 
 **Outstanding:** the reduction mark isn't drawn. The website doesn't need it — the
 favicon is the Swiss cross alone, a named exception in SAT-DESIGN.md — it's only for

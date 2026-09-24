@@ -9,20 +9,32 @@ interface Props {
 const { current } = Astro.props;
 ---
 
-<header id="site-header" class="sticky top-0 z-50 bg-canvas border-b border-ink">
+{/*
+  The header is position:fixed so its size never affects page layout; this slot
+  holds the full-size header's height in the flow instead. A sticky header that
+  shrinks pulls the content up, the browser's scroll anchoring moves scrollY
+  with it, and the header flips straight back — the jitter loop at ~180px.
+  Slot height = logo (150px, 74px on mobile) + the bar's padding + border.
+*/}
+<div id="header-slot" class="h-[calc(150px+2*var(--spacing-md)+1px)] max-[700px]:h-[calc(74px+2*var(--spacing-md)+1px)]">
+<header id="site-header" class="fixed top-0 inset-x-0 z-50 bg-canvas border-b border-ink">
   <div class="max-w-content mx-auto flex items-center justify-between gap-lg px-5 lg:px-16 py-md">
     <a href={withBase("/")} class="shrink-0">
       <img
         id="brand-logo"
         src={withBase("/images/logo-v4.png")}
         alt="Swiss Association of Taiwan"
+        width="500"
+        height="364"
         class="h-[150px] max-[700px]:h-[74px] w-auto"
       />
       <img
         id="brand-mark"
         src={withBase("/images/sat-association-mark.svg")}
         alt="Swiss Association of Taiwan"
-        class="hidden h-[52px] w-auto"
+        width="469"
+        height="90"
+        class="h-[52px] w-auto"
       />
     </a>
 
@@ -89,11 +101,19 @@ const { current } = Astro.props;
     </nav>
   </div>
 </header>
+</div>
+
+<style is:global>
+  /* Which logo shows follows html.header-compact, which the inline script in
+     Layout.astro sets before first paint — no flash of the wrong state. */
+  html.header-compact #brand-logo,
+  html:not(.header-compact) #brand-mark {
+    display: none;
+  }
+</style>
 
 <script>
   const header = document.getElementById("site-header") as HTMLElement;
-  const logo = document.getElementById("brand-logo") as HTMLImageElement;
-  const mark = document.getElementById("brand-mark") as HTMLImageElement;
   const burger = document.getElementById("nav-burger") as HTMLButtonElement;
   const panel = document.getElementById("mobile-nav-panel") as HTMLElement;
 
@@ -106,14 +126,39 @@ const { current } = Astro.props;
   // Past the scroll threshold the full lockup swaps for the association mark
   // (cross + roof, no wording) — SAT-DESIGN.md's three-form logo table — rather
   // than shrinking the lockup. See AGENTS.md "Three logo forms".
-  const onScroll = () => {
-    const compact = window.scrollY > 180;
-    logo.classList.toggle("hidden", compact);
-    mark.classList.toggle("hidden", !compact);
+  //
+  // Hysteresis: compact above 180px, back to large only below 80px, so a
+  // scrollY hovering near one value can't flip it back and forth. Runs at most
+  // once per frame.
+  const root = document.documentElement;
+  const storageKey = `sat-header-compact:${location.pathname}`;
+  let compact = root.classList.contains("header-compact");
+  let queued = false;
+
+  const update = () => {
+    queued = false;
+    const y = window.scrollY;
+    const next = compact ? y >= 80 : y > 180;
+    if (next === compact) return;
+    compact = next;
+    root.classList.toggle("header-compact", compact);
+    try {
+      sessionStorage.setItem(storageKey, compact ? "1" : "0");
+    } catch {}
     setHeaderHeight();
   };
-  onScroll();
-  window.addEventListener("scroll", onScroll, { passive: true });
+  window.addEventListener(
+    "scroll",
+    () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(update);
+    },
+    { passive: true },
+  );
+  // Reconcile once the browser has restored a reload's scroll position — not
+  // earlier: scrollY is still 0 then and would undo the state set before paint.
+  window.addEventListener("load", () => requestAnimationFrame(update));
 
   const closePanel = () => {
     panel.classList.add("hidden");
