@@ -46,7 +46,7 @@ eventsTeaser:
       frequency: "Twice a year"
       title: "Apéro in Taichung"
       body: "The same evening, for members and friends in central Taiwan who cannot make it up to Taipei."
-    - image: "/images/ev3.png"
+    - image: "/images/ev3.jpg"
       imageAlt: "Wine and candlelight at the Swiss Christmas dinner"
       frequency: "Once a year"
       title: "National Day and Christmas"

@@ -57,6 +57,20 @@ a no-op on external URLs, mailto:, tel: and hash anchors, so it's safe to wrap
 indiscriminately — keep using it on new hrefs/srcs rather than writing bare
 paths.
 
+## Load performance
+
+- Nothing third-party may block first paint. The EmailOctopus form script (it drags in
+  reCAPTCHA and a Google Fonts stylesheet) is injected from `Layout.astro` only after the
+  `load` event, when the browser is idle. Formaloo's script is `defer`, Contact page only.
+- The hero photograph is preloaded (`<slot name="head">` in `Layout.astro`) as WebP with
+  the JPEG as `<picture>` fallback, inside a fixed-ratio `bg-photo` box. Every large photo
+  sits in a fixed aspect-ratio box with a neutral background, and `text-[transparent]`
+  keeps alt text from showing while it loads. Keep photos to ~300 KB — re-encode before
+  committing (`public/images/ev3.png` was 2.3 MB).
+- `public/_headers` sets the cache rules: `/_astro/*` (content-hashed) is immutable for a
+  year; unhashed folders (`/images`, `/impressions`, …) get a day plus stale-while-revalidate
+  because files there get replaced under the same name.
+
 ## Development
 
 When starting the dev server, use background mode:
