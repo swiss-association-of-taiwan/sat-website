@@ -6,7 +6,7 @@ export interface MosaicTile {
   filename: string;
   occasion: string;
   occasionLabel: string;
-  /** Position within its band of 7 (0-6) — drives the tile span. */
+  /** Position within its band of 7 (0-6) — drives the tile span. Photos after the last full band are given 6 (plain 1x1). */
   bandPosition: number;
 }
 
@@ -60,6 +60,9 @@ export function buildMosaic(): MosaicTile[] {
   const tiles: MosaicTile[] = [];
   let remaining = files.length;
   let cursor = 0;
+  // Only photos that fill a whole band of seven get the 2x2 / tall spans; a
+  // partial final band would leave holes in the grid, so those render 1x1.
+  const fullBandTiles = files.length - (files.length % 7);
 
   while (remaining > 0) {
     const key = cycle[cursor % cycle.length];
@@ -70,7 +73,7 @@ export function buildMosaic(): MosaicTile[] {
         filename: file,
         occasion: key === "__unknown__" ? "unknown" : key,
         occasionLabel: key === "__unknown__" ? "SAT" : occasions[key],
-        bandPosition: tiles.length % 7,
+        bandPosition: tiles.length < fullBandTiles ? tiles.length % 7 : 6,
       });
       remaining--;
     }
