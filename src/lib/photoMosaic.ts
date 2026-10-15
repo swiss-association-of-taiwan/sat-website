@@ -85,7 +85,8 @@ export interface OccasionFilter {
   label: string;
 }
 
-// Drives the filter bar above the mosaic — "All" first, then every occasion
+// Not used by the page right now: the filter bar was removed at JP's request
+// (2026-10-15). Kept so it can be restored — "All" first, then every occasion
 // in the order impressions.json defines, so a new occasion (or a reordered
 // one) shows up automatically with no component change.
 export function getOccasionFilters(): OccasionFilter[] {

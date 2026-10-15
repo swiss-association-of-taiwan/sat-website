@@ -1,5 +1,5 @@
 {
-  "_note": "Occasion tags for public/impressions. occasionOrder drives the mosaic round-robin AND the order of the filter buttons on the page (an 'All' button precedes them). A photo missing from photos[] still renders; treat unknown as the last bucket.",
+  "_note": "Occasion tags for public/impressions. the occasion tags currently only decide the mixing order of the photo wall (round-robin through occasionOrder); the Impressions page has no filter buttons. getOccasionFilters() in src/lib/photoMosaic.ts is kept so a filter bar can be restored later. A photo missing from photos[] still renders; treat unknown as the last bucket.",
   "occasionOrder": [
     "august",
     "apero",
