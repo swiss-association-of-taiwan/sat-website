@@ -8,11 +8,15 @@ interface Props {
 }
 
 const { groupId } = Astro.props;
+// z-index: the EmailOctopus signup popup is a fixed panel at z-index 999999
+// (set by their embed, which we don't edit), so the lightbox sits just above
+// it — otherwise the popup covers the photo. Google's reCAPTCHA layers use
+// 2000000000, so those still stay on top of this.
 ---
 
 <div
   id={`lightbox-${groupId}`}
-  class="lightbox hidden fixed inset-0 z-[100] items-center justify-center p-3 md:p-8"
+  class="lightbox hidden fixed inset-0 z-[1000000] items-center justify-center p-3 md:p-8"
   role="dialog"
   aria-modal="true"
   aria-label="Photo viewer"
