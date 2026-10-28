@@ -17,6 +17,11 @@ const { title, subtitle, intro, heroImage, toc, figures, documents, definitionRo
 
 const blocks = parseArticleBody(page.body ?? "");
 const committee = (await getCollection("committee")).sort((a, b) => a.data.order - b.data.order);
+// Rendered card width: 1 column below 640px (viewport − 40px padding), 2 columns
+// to 767px, 3 columns from 768px (the 220px contents column takes a slice) and
+// capped at 241px once the 1200px container is reached.
+const portraitSizes =
+  "(min-width: 1200px) 241px, (min-width: 1024px) calc((100vw - 476px) / 3), (min-width: 768px) calc((100vw - 388px) / 3), (min-width: 640px) calc((100vw - 72px) / 2), calc(100vw - 40px)";
 ---
 
 <Layout title={title} current="about">
@@ -60,11 +65,33 @@ const committee = (await getCollection("committee")).sort((a, b) => a.data.order
                 committee.map((member) => (
                   <div>
                     {member.data.photo ? (
-                      <img
-                        src={withBase(member.data.photo)}
-                        alt={member.data.name}
-                        class="w-full aspect-square object-cover"
-                      />
+                      /* `photo` is the base path, no size or extension: "/committee/jeroen"
+                         → jeroen-480 / jeroen-960 as .avif, .webp and .jpg, 4:5, in
+                         public/committee/. `sizes` follows the grid: 3 columns from 768px
+                         (card ≤ 241px), 2 from 640px, 1 below. */
+                      <picture>
+                        <source
+                          type="image/avif"
+                          srcset={`${withBase(`${member.data.photo}-480.avif`)} 480w, ${withBase(`${member.data.photo}-960.avif`)} 960w`}
+                          sizes={portraitSizes}
+                        />
+                        <source
+                          type="image/webp"
+                          srcset={`${withBase(`${member.data.photo}-480.webp`)} 480w, ${withBase(`${member.data.photo}-960.webp`)} 960w`}
+                          sizes={portraitSizes}
+                        />
+                        <img
+                          src={withBase(`${member.data.photo}-480.jpg`)}
+                          srcset={`${withBase(`${member.data.photo}-480.jpg`)} 480w, ${withBase(`${member.data.photo}-960.jpg`)} 960w`}
+                          sizes={portraitSizes}
+                          width="480"
+                          height="600"
+                          loading="lazy"
+                          decoding="async"
+                          alt={member.data.name}
+                          class="block w-full h-auto aspect-[4/5] object-cover bg-canvas-soft text-[transparent]"
+                        />
+                      </picture>
                     ) : (
                       <div class="w-full aspect-square bg-canvas-soft border border-rule flex items-end p-sm">
                         <span class="text-label !text-[12px] text-mute">{member.data.role}</span>
