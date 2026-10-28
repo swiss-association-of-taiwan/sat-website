@@ -74,8 +74,11 @@ Mobile PageSpeed is the yardstick; keep first load light.
 - **About page images** (banner and the two archive scans) go through `ImageFigure`, which
   adds the same AVIF/WebP `<picture>` whenever variants exist in `public/images/r/`; its
   `sizes` values were measured from About's layout, the banner is preloaded, and the
-  lightbox still opens the full-size original JPEG. The banner variants are resized, never
-  cropped, so its 21:9 `object-position` crop is unchanged. Add a photo to the `jobs` list in
+  lightbox still opens the full-size original JPEG. The banner variants are pre-cropped to the
+  exact 21:9 strip the page shows (`crop` option in the script: the same region as CSS
+  `object-position: 50% 55%`), so the hidden top and bottom aren't downloaded; the page keeps
+  its CSS crop for the JPEG fallback. If the banner's ratio or `object-position` ever changes,
+  change `crop` too and regenerate. Add a photo to the `jobs` list in
   `scripts/responsive-images.mjs` (and run it) to give any other image the same treatment.
 - Every page has one `<main>` (in `Layout.astro`) and a meta description — the page's own
   intro/subtitle text, passed as `description` to `Layout`.
