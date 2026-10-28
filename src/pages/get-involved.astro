@@ -13,7 +13,7 @@ const { title, subtitle, closing } = page.data;
 const blocks = parseArticleBody(page.body ?? "");
 ---
 
-<Layout title={title} current="get-involved">
+<Layout title={title} description={subtitle} current="get-involved">
   <PageHeader title={title} subtitle={subtitle} />
 
   <div class="max-w-content mx-auto px-5 lg:px-16 pb-16 md:pb-section">

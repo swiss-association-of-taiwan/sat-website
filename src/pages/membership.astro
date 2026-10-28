@@ -14,7 +14,7 @@ const { title, subtitle, figures, fees, formalooSlug, closing } = page.data;
 const blocks = parseArticleBody(page.body ?? "");
 ---
 
-<Layout title={title} current="membership">
+<Layout title={title} description={subtitle} current="membership">
   <PageHeader title={title} subtitle={subtitle} />
 
   <div class="max-w-content mx-auto px-5 lg:px-16 pb-12 md:pb-22">

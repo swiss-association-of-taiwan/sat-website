@@ -13,7 +13,7 @@ const { title, subtitle, lumaSrc, definitionRows, closing } = page.data;
 const blocks = parseArticleBody(page.body ?? "");
 ---
 
-<Layout title={title} current="events">
+<Layout title={title} description={subtitle} current="events">
   <PageHeader title={title} subtitle={subtitle} />
 
   <div class="max-w-content mx-auto px-5 lg:px-16 pb-16 md:pb-section">

@@ -9,6 +9,7 @@ import ClosingCta from "../components/ClosingCta.astro";
 import Lightbox from "../components/Lightbox.astro";
 import { parseArticleBody } from "../lib/articleBody";
 import { withBase } from "../lib/url";
+import { variantSrcset } from "../lib/responsive";
 
 const page = await getEntry("pages", "about");
 if (!page) throw new Error("Missing content/pages/about.md");
@@ -16,6 +17,9 @@ const { title, subtitle, intro, heroImage, toc, figures, documents, definitionRo
   page.data;
 
 const blocks = parseArticleBody(page.body ?? "");
+// Rendered width of the banner: the 1200px container less its side padding.
+const bannerSizes = "(min-width: 1200px) 1072px, (min-width: 1024px) calc(100vw - 128px), calc(100vw - 40px)";
+const bannerAvif = heroImage ? variantSrcset(heroImage.src, "avif") : "";
 const committee = (await getCollection("committee")).sort((a, b) => a.data.order - b.data.order);
 // Rendered card width: 1 column below 640px (viewport − 40px padding), 2 columns
 // to 767px, 3 columns from 768px (the 220px contents column takes a slice) and
@@ -24,7 +28,20 @@ const portraitSizes =
   "(min-width: 1200px) 241px, (min-width: 1024px) calc((100vw - 476px) / 3), (min-width: 768px) calc((100vw - 388px) / 3), (min-width: 640px) calc((100vw - 72px) / 2), calc(100vw - 40px)";
 ---
 
-<Layout title={title} current="about">
+<Layout title={title} description={intro ?? subtitle} current="about">
+  {
+    bannerAvif && (
+      <link
+        slot="head"
+        rel="preload"
+        as="image"
+        type="image/avif"
+        imagesrcset={bannerAvif}
+        imagesizes={bannerSizes}
+        fetchpriority="high"
+      />
+    )
+  }
   <PageHeader title={title} subtitle={subtitle} intro={intro} />
 
   {
@@ -36,6 +53,8 @@ const portraitSizes =
           caption={heroImage.caption}
           ratio="21:9"
           objectPosition={heroImage.objectPosition}
+          sizes={bannerSizes}
+          priority
         />
       </div>
     )

@@ -16,10 +16,12 @@ import { withBase } from "../lib/url";
 
 interface Props {
   title: string;
+  /** Meta description. Pages pass their own on-page intro/subtitle text. */
+  description?: string;
   current: NavKey;
 }
 
-const { title, current } = Astro.props;
+const { title, description, current } = Astro.props;
 ---
 
 <html lang="en">
@@ -48,11 +50,14 @@ const { title, current } = Astro.props;
         } catch (e) {}
       })();
     </script>
+    {description && <meta name="description" content={description} />}
     <title>{title} · Swiss Association of Taiwan</title>
   </head>
   <body class="overflow-x-hidden">
     <Header current={current} />
-    <slot />
+    <main>
+      <slot />
+    </main>
     <Footer />
     <!-- EmailOctopus signup form (handoff/CHANGES-2026-09-23.md). It is a slide-in
          popup ("Get SAT Event Notifications"), not a section of the page, and its
