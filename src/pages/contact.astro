@@ -10,7 +10,7 @@ if (!page) throw new Error("Missing content/pages/contact.md");
 const { title, subtitle, formalooSlug, directContacts, locationLabel, note, closing } = page.data;
 ---
 
-<Layout title={title} current="contact">
+<Layout title={title} description={subtitle} current="contact">
   <PageHeader title={title} subtitle={subtitle} />
 
   <Section borderTop>

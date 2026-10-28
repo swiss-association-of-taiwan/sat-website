@@ -1,4 +1,6 @@
 ---
+import { variantSrcset } from "../lib/responsive";
+
 interface Props {
   src: string;
   alt: string;
@@ -10,6 +12,11 @@ interface Props {
   lightboxIndex?: number;
   enlargeLabel?: string;
   objectPosition?: string;
+  /** The `sizes` attribute — how wide the image renders at each breakpoint. Only
+      used when AVIF/WebP variants exist in public/images/r/ (scripts/responsive-images.mjs). */
+  sizes?: string;
+  /** Above the fold: not lazy, fetched first. */
+  priority?: boolean;
 }
 
 const {
@@ -23,6 +30,8 @@ const {
   lightboxIndex,
   enlargeLabel,
   objectPosition,
+  sizes = "100vw",
+  priority = false,
 } = Astro.props;
 
 const ratioClass = { "21:9": "aspect-[21/9]", "3:2": "aspect-[3/2]", "1:1": "aspect-square" }[ratio];
@@ -30,6 +39,10 @@ const ratioClass = { "21:9": "aspect-[21/9]", "3:2": "aspect-[3/2]", "1:1": "asp
 // hole with alt text in it, until the image arrives.
 const imgClass = ["w-full h-full object-cover bg-canvas-soft text-[transparent]", ratioClass, grayscale && "grayscale"];
 const imgStyle = objectPosition ? `object-position: ${objectPosition}` : undefined;
+// src arrives already through withBase(); variantSrcset() reads the file name from it.
+const avif = variantSrcset(src, "avif");
+const webp = variantSrcset(src, "webp");
+const loadingAttrs = priority ? { fetchpriority: "high", decoding: "async" } : { loading: "lazy", decoding: "async" };
 ---
 
 <figure class:list={["m-0", className]}>
@@ -42,10 +55,26 @@ const imgStyle = objectPosition ? `object-position: ${objectPosition}` : undefin
         data-lightbox-trigger={lightboxGroup}
         data-lightbox-index={lightboxIndex}
       >
-        <img src={src} alt={alt} class:list={imgClass} style={imgStyle} />
+        {webp ? (
+          <picture class="contents">
+            <source type="image/avif" srcset={avif} sizes={sizes} />
+            <source type="image/webp" srcset={webp} sizes={sizes} />
+            <img src={src} alt={alt} class:list={imgClass} style={imgStyle} {...loadingAttrs} />
+          </picture>
+        ) : (
+          <img src={src} alt={alt} class:list={imgClass} style={imgStyle} />
+        )}
       </button>
     ) : (
-      <img src={src} alt={alt} class:list={imgClass} style={imgStyle} />
+      webp ? (
+        <picture class="contents">
+          <source type="image/avif" srcset={avif} sizes={sizes} />
+          <source type="image/webp" srcset={webp} sizes={sizes} />
+          <img src={src} alt={alt} class:list={imgClass} style={imgStyle} {...loadingAttrs} />
+        </picture>
+      ) : (
+        <img src={src} alt={alt} class:list={imgClass} style={imgStyle} />
+      )
     )
   }
   {caption && <figcaption class="text-caption text-body border-t border-rule mt-sm pt-sm">{caption}</figcaption>}

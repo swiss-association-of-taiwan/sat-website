@@ -48,6 +48,14 @@ const figureByKey = new Map(figures.map((f) => [f.key, f]));
 const documentByKey = new Map(documents.map((d) => [d.key, d]));
 
 let lightboxCursor = 0;
+
+// `sizes` for figure images, measured from About's layout: the article column
+// sits right of the 220px contents column from 768px (≤ 788px wide at the 1200px
+// container), full width below. Two figures share the row from 640px (32px gap).
+const figureSizes = {
+  wide: "(min-width: 1200px) 788px, (min-width: 1024px) calc(100vw - 412px), (min-width: 768px) calc(100vw - 324px), calc(100vw - 40px)",
+  pair: "(min-width: 1200px) 378px, (min-width: 1024px) calc((100vw - 444px) / 2), (min-width: 768px) calc((100vw - 356px) / 2), (min-width: 640px) calc((100vw - 72px) / 2), calc(100vw - 40px)",
+};
 ---
 
 <div class="article-body">
@@ -69,6 +77,7 @@ let lightboxCursor = 0;
                 grayscale={fig.grayscale}
                 lightboxGroup={lightboxGroup}
                 lightboxIndex={lightboxGroup ? lightboxCursor++ : undefined}
+                sizes={wide ? figureSizes.wide : figureSizes.pair}
               />
             ))}
           </div>

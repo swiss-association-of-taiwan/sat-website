@@ -12,7 +12,7 @@ const { hero, nextEvent, audience, eventsTeaser, membershipCta, contactCards } =
 const heroAvifSet = hero ? variantSrcset(hero.image, "avif") : "";
 ---
 
-<Layout title="Home" current="home">
+<Layout title="Home" description={hero?.subtitle} current="home">
   {
     heroAvifSet && (
       <link

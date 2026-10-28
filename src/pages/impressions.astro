@@ -10,7 +10,7 @@ if (!page) throw new Error("Missing content/pages/impressions.md");
 const { title, subtitle } = page.data;
 ---
 
-<Layout title={title} current="impressions">
+<Layout title={title} description={subtitle} current="impressions">
   <PageHeader title={title} subtitle={subtitle} />
 
   <div class="max-w-content mx-auto px-5 lg:px-16 pb-16 md:pb-section">
