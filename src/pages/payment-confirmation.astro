@@ -1,0 +1,76 @@
+---
+// Hidden page: reached only by the link in the Christmas Dinner payment email.
+// Deliberately NOT linked from the nav, footer, home or any other page, and
+// kept out of search engines (noindex below). The site has no sitemap, so
+// there is nothing to exclude there — if one is ever added, leave this URL out.
+//
+// Same two-column structure as Contact (form left, notes right). The Formaloo
+// embed sizes itself to the form (data-auto-height), so there is no scroll box
+// inside the page. Its wrapper reserves 715px until the form has loaded: the
+// page never collapses, and the form then grows downward, so only content
+// below the form (the notes on a phone, the footer) moves.
+import Layout from "../layouts/Layout.astro";
+import Section from "../components/Section.astro";
+import type { NavKey } from "../lib/nav";
+
+// Not a real nav key, so no item in the header is marked as the current page.
+const noNavItem = "none" as unknown as NavKey;
+---
+
+<Layout title="Christmas Dinner Payment Confirmation" current={noNavItem}>
+  <meta slot="head" name="robots" content="noindex, nofollow" />
+
+  <div class="max-w-content mx-auto px-5 lg:px-16 pt-16 md:pt-24 pb-8 md:pb-12">
+    <div class="text-label text-red-ink">Christmas Dinner</div>
+    <h1 class="text-display-lg text-ink mt-md">Payment Confirmation</h1>
+    <p class="text-display-quiet text-ink mt-lg max-w-[46ch]">
+      Please fill out the form below with the transaction information for our treasurer to match your payment with the
+      registration.
+    </p>
+  </div>
+
+  <Section borderTop>
+    <div class="grid grid-cols-1 md:grid-cols-[1.4fr_1fr] gap-8 md:gap-16 items-start">
+      <div>
+        <div class="text-label text-ink pb-md border-b border-ink">Transaction details</div>
+        <div class="mt-lg min-h-[715px]">
+          <div
+            class="formaloo--root-container"
+            data-form-slug="jo6Lpdpt"
+            data-transparent-background="false"
+            data-hide-title="false"
+            data-hide-cover-and-logo="false"
+            data-fill-container-width="true"
+            data-auto-height="true"
+            data-skip-welcome-page="false"
+            style="width:100%;height:auto"
+          >
+          </div>
+          <script is:inline src="https://embed.formaloo.me/v1/main.js" defer></script>
+        </div>
+      </div>
+
+      <div>
+        <div class="text-label text-ink pb-md border-b border-ink">Please note</div>
+        <div class="mt-lg flex flex-col gap-lg">
+          <p class="text-body-md font-bold text-ink">
+            Your Luma registration is not valid without an email confirmation from our treasurer that we received your
+            payment and confirm the amount is correct.
+          </p>
+          <p class="text-body-md text-ink border-t border-rule pt-lg">
+            Payments have to be made in advance. We do not accept payments on site.
+          </p>
+          <div class="border-t border-rule pt-lg">
+            <div class="text-label text-red-ink">Treasurer</div>
+            <a
+              href="mailto:treasurer@swissassociation.tw"
+              class="inline-block mt-xs text-body-md text-red-ink break-words hover:text-ink"
+            >
+              treasurer@swissassociation.tw
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </Section>
+</Layout>
