@@ -23,6 +23,9 @@ interface Props {
 const { src, alt, sizes, width, height, class: className, loading = "lazy", fetchpriority } = Astro.props;
 const avif = variantSrcset(src, "avif");
 const webp = variantSrcset(src, "webp");
+// Pre-sized photos also ship JPEG sizes in public/images/r/, so the fallback <img>
+// gets a srcset too. Empty for photos that only have the single original JPEG.
+const jpg = variantSrcset(src, "jpg");
 ---
 
 {
@@ -32,6 +35,8 @@ const webp = variantSrcset(src, "webp");
       <source type="image/webp" srcset={webp} sizes={sizes} />
       <img
         src={withBase(src)}
+        srcset={jpg || undefined}
+        sizes={jpg ? sizes : undefined}
         alt={alt}
         width={width}
         height={height}

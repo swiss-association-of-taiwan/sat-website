@@ -55,7 +55,7 @@ eventsTeaser:
 membershipCta:
   title: "Members strengthen the association"
   body: "Membership is open to Swiss nationals and to anyone with a connection to Switzerland living in Taiwan. Members pay a reduced fee at every event and receive the agenda before it is published."
-  image: "/images/members.jpg"
+  image: "/images/r/members-896.jpg"
   imageAlt: "SAT members at the National Day apéro"
   primaryLabel: "Apply for membership"
   primaryHref: "/membership/"

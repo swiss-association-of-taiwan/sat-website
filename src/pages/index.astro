@@ -141,13 +141,15 @@ const heroAvifSet = hero ? variantSrcset(hero.image, "avif") : "";
       <section class="bg-canvas-soft">
         <div class="grid grid-cols-1 md:grid-cols-2 items-stretch">
           <div class="min-h-[300px] md:min-h-[560px]">
+            {/* aspect-[3/2] on a phone keeps this box at the 300px it had with the old 3:2
+                photo; the new photo's 8:7 width/height would otherwise make it 337px. */}
             <ResponsivePicture
               src={membershipCta.image}
               alt={membershipCta.imageAlt}
               sizes="(min-width: 768px) 50vw, 100vw"
-              width={1176}
+              width={896}
               height={784}
-              class="w-full h-full min-h-[300px] md:min-h-[560px] object-cover bg-canvas-soft text-[transparent]"
+              class="w-full h-full min-h-[300px] md:min-h-[560px] aspect-[3/2] md:aspect-auto object-cover object-[55%_30%] bg-canvas-soft text-[transparent]"
             />
           </div>
           <div class="flex flex-col justify-center px-5 lg:px-16 py-16 md:py-section">

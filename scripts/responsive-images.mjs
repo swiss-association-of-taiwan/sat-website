@@ -19,7 +19,9 @@ const jobs = [
   { file: "ev1.jpg", widths: [480, 800, 1200] },
   { file: "ev2.jpg", widths: [480, 800, 1200] },
   { file: "ev3.jpg", widths: [480, 800, 1200] },
-  { file: "members.jpg", widths: [480, 800, 1200] },
+  // (The home "Members strengthen the association" photo is not generated here:
+  // it arrives pre-sized as members-600/896 .jpg .webp in public/images/r/, with
+  // the AVIFs made from members-896.jpg.)
   // About page. The banner is a 4:3 photo that the page always shows as a 21:9
   // strip with object-position 50% 55%. The variants are pre-cropped to exactly
   // that strip (same region, same position), so nobody downloads the hidden top
